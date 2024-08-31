@@ -1,42 +1,43 @@
 extends CharacterBody3D
-var ground_accel = 17
-var max_ground_vel = 50
-var air_accel = 7
-var max_air_vel = 100
-var friction = 2.8
-var grav= 9.85
-var jagain=2
-var coyote =0.0
-var buffer = 0.0
-var sltime=0.7
-var decre=0.4
-var air_cap=1.3
+var ground_accel := 17
+var max_ground_vel := 50
+var air_accel := 7
+var max_air_vel := 100
+var friction := 2.8
+var grav := 9.85
+var jagain :=2
+var coyote :=0.0
+var buffer := 0.0
+var sltime :=0.7
+var decre :=0.4
+var air_cap :=1.3
 #var air_move=50
 @onready var head = $nek/head
 @onready var cam = $nek/head/Camera3D
 @onready var nek = $nek
 
-var bob_freq=2
-var bob_amp=0.08
-var t_bob = 0.0
-@onready var pcap=$CollisionShape3D
-const tocrouch = 7
-var defaultH=2
-var crouchH=0.7
-var free=false
-const max_step=0.5
-var _snapped_to_stairs_last_frame =false
-var _last_frame_was_on_floor=-INF
-var on_floor=false
+var bob_freq :=2
+var bob_amp :=0.08
+var t_bob := 0.0
+@onready var pcap =$CollisionShape3D
+const tocrouch := 7
+var defaultH :=2
+var crouchH :=0.7
+var free :=false
+const max_step :=0.5
+var _snapped_to_stairs_last_frame :=false
+var _last_frame_was_on_floor :=-INF
+var on_floor :=false
 
 
-func _process(delta):
+func _process(delta) -> void:
 	if Input.is_action_pressed("quit"):
 		get_tree().quit()
 
 func too(normal):
 	return normal.angle_to(Vector3.UP) > self.floor_max_angle
-func clip(normal:Vector3,overbounce:float,delta:float):
+
+func clip(normal:Vector3,overbounce:float,delta:float) -> void:
 	var back := velocity.dot(normal)*overbounce/2
 	if back>=0: return
 	var collision = move_and_collide(velocity * delta)
@@ -65,7 +66,7 @@ func move_ground(accel_dir,prev_vel,delta):
 	return accelrate(accel_dir,prev_vel,ground_accel,max_ground_vel,delta)
 
 
-func move_air(accel_dir,prev_vel,delta):#should have prob called accel func
+func move_air(accel_dir,prev_vel,delta) -> void:#should have prob called accel func
 	var air_move= 12
 	var proj_vel = prev_vel.dot(accel_dir)
 	var capped_speed = min((air_move * accel_dir).length(), air_cap)
@@ -143,21 +144,27 @@ func _snap_up_stairs_check(delta) -> bool:
 			_snapped_to_stairs_last_frame = true
 			return true
 	return false
-
-func _physics_process(delta):
-	var line_instance=line(self.position,Vector3(10,10,10),Color.BLACK)
-	if %grap.is_colliding()&&Input.is_action_pressed("slam"):
-		var grap_line = line_instance.instantate()
-		%player.add_child(grap_line)
-	else:
+	
+var grap_line = line(Vector3.ZERO,Vector3.ZERO)
+var grap_timer := 5 # 5 -> ready ,0 -> free 
+const grap_default_timer = 2
+func _physics_process(delta) -> void:
+	
+	if grap_timer == 0:
+		grap_line.queue_free()
+		grap_timer = grap_default_timer+1
 		
-		var temp_line = get_node("player/grap_line")
-		print(temp_line)
-		#temp_line.queue_free()
-	#print(rad_to_deg(get_wall_normal().angle_to(Vector3.UP)))
-	#print(8-velocity.dot((get_floor_normal())))
-	#print(velocity.length())
-	#print(velocity)
+	elif grap_timer == grap_default_timer+1:
+		if %grap.is_colliding()&&Input.is_action_pressed("slam"):
+			# draw line when u slam and lookin at wall
+			grap_line = line(global_position, %grap.get_collision_point())
+			get_tree().get_root().add_child(grap_line)
+			grap_timer = grap_default_timer
+	else:
+		grap_timer -= 1
+		
+	
+	
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if is_on_floor() or _snapped_to_stairs_last_frame:
@@ -197,10 +204,22 @@ func _physics_process(delta):
 		velocity = Vector3(0,0,0)
 		position = Vector3(-0,1,-23)
 		
+#func final_cleanup(mesh_instance: MeshInstance3D, persist_ms: float):
+	#get_tree().get_root().add_child(mesh_instance)
+	#if persist_ms == 1:
+		#await get_tree().physics_frame
+		#mesh_instance.queue_free()
+	#elif persist_ms > 0:
+		#await get_tree().create_timer(persist_ms).timeout
+		#mesh_instance.queue_free()
+	#else:
+		#return mesh_instance
 
-func line(pos1,pos2,color):
+func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, persist_ms :float= 0):
+	# it make line what else bruh
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()
+	# use immediate mesh to make custon polygons , by defining collection of points
 	var material := ORMMaterial3D.new()
 
 	mesh_instance.mesh = immediate_mesh
@@ -213,10 +232,11 @@ func line(pos1,pos2,color):
 
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.albedo_color = color
-	
+
 	return mesh_instance
 
-func crouch(delta):
+
+func crouch(delta) -> void:
 	if !is_on_floor()&&Input.is_action_pressed("crouch")&&coyote<0.1&&buffer<0.1:
 		velocity.y-=100*delta
 		
@@ -247,7 +267,7 @@ func crouch(delta):
 		pcap.shape.height+=tocrouch*delta
 	pcap.shape.height= clamp(pcap.shape.height,crouchH,defaultH)
 
-func jump():
+func jump() -> void:
 	if buffer>0.0&& coyote>0.0&&jagain>0:
 		jagain-=1
 		coyote = 0
@@ -255,7 +275,7 @@ func jump():
 		velocity.y+= 6
 		
 
-func _input(event):
+func _input(event) -> void:
 	if event.is_action_released("ui_accept"):
 		if velocity.y>0.0:
 			velocity.y*=0.5
@@ -263,7 +283,7 @@ func _input(event):
 				velocity.x*=0.5*get_wall_normal().x
 				velocity.x*=0.5*get_wall_normal().y
 
-func _unhandled_input(event):
+func _unhandled_input(event) -> void:
 	if event is InputEventMouseMotion:
 		if free:
 			nek.rotate_y(-event.relative.x*.002)
@@ -277,9 +297,8 @@ func _ready():
 	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	cam.current=true
 
-func headbob(time):
+func headbob(time) -> Vector3:
 	var pos = Vector3.ZERO
 	pos.y = sin(time* bob_freq) * bob_amp
 	pos.x = cos(time* bob_freq / 2) * bob_amp
 	return pos
-
