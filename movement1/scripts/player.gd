@@ -29,6 +29,8 @@ var _snapped_to_stairs_last_frame :=false
 var _last_frame_was_on_floor :=-INF
 var on_floor :=false
 
+const grap_default_timer := 0
+const grap_max_limit :int= 30
 
 func _process(delta) -> void:
 	if Input.is_action_pressed("quit"):
@@ -49,7 +51,7 @@ func clip(normal:Vector3,overbounce:float,delta:float) -> void:
 		self.velocity-=normal*adjust
 	#move_and_slide_own()
 
-func accelrate(accel_dir,prev_vel,accel,max_vel,delta):
+func accelrate(accel_dir,prev_vel,accel,max_vel,delta) -> Vector3:
 	var proj_vel = prev_vel.dot(accel_dir)
 	#print(proj_vel)
 	var accel_vel = accel*delta
@@ -58,7 +60,7 @@ func accelrate(accel_dir,prev_vel,accel,max_vel,delta):
 	return prev_vel+accel_dir*accel_vel
 
 
-func move_ground(accel_dir,prev_vel,delta):
+func move_ground(accel_dir,prev_vel,delta) -> Vector3:
 	var speed = prev_vel.length()
 	if speed != 0:
 		var drop =  speed*friction*delta
@@ -147,7 +149,6 @@ func _snap_up_stairs_check(delta) -> bool:
 	
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
 var grap_timer := 5 # 5 -> ready ,0 -> free 
-const grap_default_timer = 2
 func _physics_process(delta) -> void:
 	
 	if grap_timer == 0:
@@ -157,9 +158,11 @@ func _physics_process(delta) -> void:
 	elif grap_timer == grap_default_timer+1:
 		if %grap.is_colliding()&&Input.is_action_pressed("slam"):
 			# draw line when u slam and lookin at wall
-			grap_line = line(global_position, %grap.get_collision_point())
-			get_tree().get_root().add_child(grap_line)
-			grap_timer = grap_default_timer
+			var dist = %grap.get_collision_point()
+			if global_position.distance_to(dist) < grap_max_limit:
+				grap_line = line(global_position,dist)
+				get_tree().get_root().add_child(grap_line)
+				grap_timer = grap_default_timer
 	else:
 		grap_timer -= 1
 		
