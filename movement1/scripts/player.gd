@@ -8,14 +8,15 @@ var grav := 9.85
 var jagain :=2
 var coyote :=0.0
 var buffer := 0.0
-var sltime :=0.7
+var sltime :=0.5
 var decre :=0.4
 var air_cap :=1.3
 #var air_move=50
 @onready var head = $nek/head
 @onready var cam = $nek/head/Camera3D
 @onready var nek = $nek
-
+@onready var wal=$RayCast3D
+@onready var wal2 =$RayCast3D2
 var bob_freq :=2
 var bob_amp :=0.08
 var t_bob := 0.0
@@ -28,21 +29,21 @@ const max_step :=0.5
 var _snapped_to_stairs_last_frame :=false
 var _last_frame_was_on_floor :=-INF
 var on_floor :=false
-
+var dist=Vector3(0,0,0)
 const grap_default_timer := 0
-const grap_max_limit :int= 30
+const grap_max_limit :int= 25
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if Input.is_action_pressed("quit"):
 		get_tree().quit()
 
 func too(normal):
 	return normal.angle_to(Vector3.UP) > self.floor_max_angle
 
-func clip(normal:Vector3,overbounce:float,delta:float) -> void:
+func clip(normal:Vector3,overbounce:float,_delta:float) -> void:
 	var back := velocity.dot(normal)*overbounce/2
 	if back>=0: return
-	var collision = move_and_collide(velocity * delta)
+	#var collision = move_and_collide(velocity * delta)
 	var change:= normal*back
 	self.velocity -=change
 	var adjust:=self.velocity.dot(normal)
@@ -150,19 +151,23 @@ func _snap_up_stairs_check(delta) -> bool:
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
 var grap_timer := 5 # 5 -> ready ,0 -> free 
 func _physics_process(delta) -> void:
-	
 	if grap_timer == 0:
 		grap_line.queue_free()
 		grap_timer = grap_default_timer+1
 		
 	elif grap_timer == grap_default_timer+1:
+
 		if %grap.is_colliding()&&Input.is_action_pressed("slam"):
 			# draw line when u slam and lookin at wall
-			var dist = %grap.get_collision_point()
+			if Input.is_action_just_pressed("slam"):
+				dist = %grap.get_collision_point()
 			if global_position.distance_to(dist) < grap_max_limit:
-				grap_line = line(global_position,dist)
+				grap_line = line(global_position+Vector3(0,0.1,0),dist)
 				get_tree().get_root().add_child(grap_line)
 				grap_timer = grap_default_timer
+				velocity+=(dist-global_position)*delta*(1/global_position.distance_to(dist))*30
+				grav=0
+		print(velocity.length())
 	else:
 		grap_timer -= 1
 		
@@ -195,6 +200,8 @@ func _physics_process(delta) -> void:
 	cam.transform.origin = headbob(t_bob)
 	jump()
 	crouch(delta)
+	if sltime>=0.5:
+		sltime=0.5
 	if Input.is_action_pressed("free"):
 		free= true
 	else:
@@ -218,7 +225,7 @@ func _physics_process(delta) -> void:
 	#else:
 		#return mesh_instance
 
-func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, persist_ms :float= 0):
+func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, _persist_ms :float= 0):
 	# it make line what else bruh
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()
@@ -242,6 +249,8 @@ func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, persist_ms :
 func crouch(delta) -> void:
 	if !is_on_floor()&&Input.is_action_pressed("crouch")&&coyote<0.1&&buffer<0.1:
 		velocity.y-=100*delta
+	#if %below.is_colliding()&&Input.is_action_just_pressed("crouch"):
+		#velocity*=(velocity.y)
 		
 	if Input.is_action_pressed("crouch"):
 		pcap.shape.height-=tocrouch*delta
@@ -251,7 +260,7 @@ func crouch(delta) -> void:
 			friction=4
 		elif sltime>0:
 			cam.fov=80
-			friction=0.1
+			friction=0.2
 			#print(jagain)
 			sltime-=decre*delta
 			if Input.is_action_just_pressed("ui_accept"):#boost
@@ -265,7 +274,7 @@ func crouch(delta) -> void:
 		max_ground_vel=50
 		cam.fov=75
 		friction=2.5
-		sltime=0.5
+		sltime+=delta*5
 	elif not is_on_ceiling():
 		pcap.shape.height+=tocrouch*delta
 	pcap.shape.height= clamp(pcap.shape.height,crouchH,defaultH)

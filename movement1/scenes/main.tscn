@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://k0g8l20jpn5l"]
+[gd_scene load_steps=19 format=3 uid="uid://k0g8l20jpn5l"]
 
 [ext_resource type="Material" uid="uid://ntptsm338blc" path="res://materials/Brick_023.tres" id="1_0udfd"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="2_4qtao"]
 [ext_resource type="Material" uid="uid://j7782yfgmq8m" path="res://materials/Brick_069.tres" id="2_buung"]
 [ext_resource type="Sky" uid="uid://bb73jaefiwfku" path="res://skys/CloudySkyStatic.tres" id="2_fb8vh"]
 [ext_resource type="Material" uid="uid://fdx6yjtfayq3" path="res://materials/MetalPlates_008.tres" id="3_kljmn"]
@@ -113,6 +114,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+size_flags_horizontal = 8
+script = ExtResource("2_4qtao")
 
 [node name="Stats" type="CanvasGroup" parent="UI"]
 
@@ -121,10 +124,10 @@ layer = 2
 
 [node name="FPS" type="Label" parent="UI/Stats/UI"]
 layout_direction = 3
-offset_left = 93.0
 offset_top = 3.0
 offset_right = 182.0
 offset_bottom = 66.0
+size_flags_horizontal = 8
 text = "FPS:"
 label_settings = SubResource("LabelSettings_oj2fi")
 horizontal_alignment = 1
