@@ -133,7 +133,7 @@ theme_override_font_sizes/font_size = 27
 text = "   km/h"
 
 [node name="FPS" type="Label" parent="UI/Stats/UI"]
-anchors_preset = -1
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -142.0
