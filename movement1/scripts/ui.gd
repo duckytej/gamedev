@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var text =str(Engine.get_frames_per_second())
 	$Stats/UI/FPS.text="FPS: "+text
 	

@@ -8,9 +8,10 @@ var grav := 9.85
 var jagain :=2
 var coyote :=0.0
 var buffer := 0.0
-var sltime :=0.5
+var sltime :=0.4
 var decre :=0.4
 var air_cap :=1.3
+var sagain=false
 #var air_move=50
 @onready var head = $nek/head
 @onready var cam = $nek/head/Camera3D
@@ -31,7 +32,10 @@ var _last_frame_was_on_floor :=-INF
 var on_floor :=false
 var dist=Vector3(0,0,0)
 const grap_default_timer := 0
-const grap_max_limit :int= 25
+const grap_max_limit :int= 30
+const slamfactor=0.5
+var slaming=false
+var vel=0
 
 func _process(_delta) -> void:
 	if Input.is_action_pressed("quit"):
@@ -167,7 +171,7 @@ func _physics_process(delta) -> void:
 				grap_timer = grap_default_timer
 				velocity+=(dist-global_position)*delta*(1/global_position.distance_to(dist))*30
 				grav=0
-		print(velocity.length())
+		#print(%grap.is_colliding())
 	else:
 		grap_timer -= 1
 		
@@ -178,7 +182,7 @@ func _physics_process(delta) -> void:
 	if is_on_floor() or _snapped_to_stairs_last_frame:
 		_last_frame_was_on_floor=Engine.get_physics_frames()
 		jagain=2
-		coyote=0.18
+		coyote=0.19
 		velocity = move_ground(direction,velocity,delta)
 	else:
 		move_air(direction,velocity,delta)
@@ -192,7 +196,7 @@ func _physics_process(delta) -> void:
 			velocity.y+= 8
 			jagain-=1
 		else:
-			buffer=0.15
+			buffer=0.17
 			
 	else:
 		buffer-=delta
@@ -200,8 +204,8 @@ func _physics_process(delta) -> void:
 	cam.transform.origin = headbob(t_bob)
 	jump()
 	crouch(delta)
-	if sltime>=0.5:
-		sltime=0.5
+	if sltime>=0.4:
+		sltime=0.4
 	if Input.is_action_pressed("free"):
 		free= true
 	else:
@@ -247,8 +251,12 @@ func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, _persist_ms 
 
 
 func crouch(delta) -> void:
+	if Input.is_action_pressed("crouch")==false&&is_on_floor():
+		sagain=false
 	if !is_on_floor()&&Input.is_action_pressed("crouch")&&coyote<0.1&&buffer<0.1:
 		velocity.y-=100*delta
+		vel=velocity.y
+		slaming=true
 	#if %below.is_colliding()&&Input.is_action_just_pressed("crouch"):
 		#velocity*=(velocity.y)
 		
@@ -256,8 +264,15 @@ func crouch(delta) -> void:
 		pcap.shape.height-=tocrouch*delta
 		if(velocity.length()<11-velocity.dot((get_floor_normal()))):
 			ground_accel=10
+			if is_on_floor()&&slaming==true&&sagain==false:
+				velocity.x*=1.3
+				velocity.y*=1.3
+				velocity.y+=get_floor_normal().y*slamfactor*vel*delta*-1*50
+				slaming=false
+				sagain=true
+			print(get_floor_normal()*slamfactor*vel*delta*-1,vel)
 			#max_ground_vel=20
-			friction=4
+			friction=4.2
 		elif sltime>0:
 			cam.fov=80
 			friction=0.2
@@ -274,7 +289,8 @@ func crouch(delta) -> void:
 		max_ground_vel=50
 		cam.fov=75
 		friction=2.5
-		sltime+=delta*5
+		sltime=0.4
+		
 	elif not is_on_ceiling():
 		pcap.shape.height+=tocrouch*delta
 	pcap.shape.height= clamp(pcap.shape.height,crouchH,defaultH)
