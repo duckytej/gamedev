@@ -160,7 +160,7 @@ func graple(delta: float)-> void:
 		grap_line = line(global_position+Vector3(0,0.1,0),grap_location)
 		get_tree().get_root().add_child(grap_line)
 		grap_timer = grap_default_timer
-		velocity+=(grap_location-global_position)*delta*(1/dist*2)*30
+		velocity+=(grap_location-global_position)*delta*(1/dist*2)*10
 		grav=-1
 
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
@@ -236,7 +236,7 @@ func _physics_process(delta:float) -> void:
 	#else:
 		#return mesh_instance
 
-func line(pos1: Vector3, pos2: Vector3, color := Color.BLACK, _persist_ms :float= 0):
+func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, _persist_ms :float= 0):
 	# it make line what else bruh
 	var mesh_instance := MeshInstance3D.new()
 	var immediate_mesh := ImmediateMesh.new()
@@ -257,10 +257,9 @@ func line(pos1: Vector3, pos2: Vector3, color := Color.BLACK, _persist_ms :float
 	return mesh_instance
 
 
-func crouch(delta) -> void:
+func crouch(delta:float) -> void:
 	if Input.is_action_pressed("crouch")==false&&is_on_floor():
 		sagain=false
-func crouch(delta: float) -> void:
 	if !is_on_floor()&&Input.is_action_pressed("crouch")&&coyote<0.1&&buffer<0.1:
 		velocity.y-=100*delta
 		vel=velocity.y
