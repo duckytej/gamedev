@@ -115,7 +115,7 @@ script = ExtResource("2_4qtao")
 layer = 2
 
 [node name="speed" type="Label" parent="UI/Stats/UI"]
-anchors_preset = -1
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -144.0
@@ -161,6 +161,13 @@ material_override = ExtResource("2_buung")
 use_collision = true
 collision_layer = 2
 size = Vector3(20, 1, 20)
+
+[node name="ConcreteCSGBox3D3" type="CSGBox3D" parent="Stage/Node3D" groups=["Concrete"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.0111, 50, 80.6037)
+material_override = ExtResource("2_buung")
+use_collision = true
+collision_layer = 2
+size = Vector3(28.1321, 1, 132.878)
 
 [node name="MetalCSGBox3D3" type="CSGBox3D" parent="Stage/Node3D" groups=["Metal"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.101038, 50.05, 10.5202)
@@ -1333,6 +1340,104 @@ size = Vector3(2, 2.5, 2)
 
 [node name="MetalCSGBox3D74" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 52.5, -2.75)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D75" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 61.8686, 32.3697)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D76" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.34965, 53.0096, 20.674)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D77" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.94853, 55.2054, 24.8651)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D79" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.642, 53.7062, 49.7001)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D80" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.7893, 53.7062, 73.3954)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D86" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2405, 69.8672, 63.0276)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D87" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2405, 69.8672, 101.608)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D88" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2405, 69.8672, 142.505)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D81" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.3338, 53.7062, 89.1868)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D82" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8473, 53.7062, 109.025)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D83" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.1252, 53.7062, 124.572)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D84" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.9218, 53.7062, 148.249)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D85" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1206, 53.7062, 163.748)
+material_override = ExtResource("4_ltx8g")
+use_collision = true
+collision_layer = 2
+size = Vector3(2, 4, 2)
+
+[node name="MetalCSGBox3D78" type="CSGBox3D" parent="Stage/Node3D4" groups=["Metal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.729792, 58.7029, 29.6246)
 material_override = ExtResource("4_ltx8g")
 use_collision = true
 collision_layer = 2
