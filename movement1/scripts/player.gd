@@ -153,14 +153,14 @@ func _snap_up_stairs_check(delta:float) -> bool:
 	return false
 
 func graple(delta: float)-> void:
-	if Input.is_action_just_pressed("slam"):
+	if Input.is_action_just_pressed("grap"):
 		grap_location = %grap.get_collision_point()
 	dist = global_position.distance_to(grap_location)
 	if dist < grap_max_limit:
 		grap_line = line(global_position+Vector3(0,0.1,0),grap_location)
 		get_tree().get_root().add_child(grap_line)
 		grap_timer = grap_default_timer
-		velocity+=(grap_location-global_position)*delta*(1/dist*2)*10
+		velocity+=(grap_location-global_position)*delta*(1/dist*2)*9
 		grav=-1
 
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
@@ -169,20 +169,19 @@ var grap_location :Vector3  = Vector3.ZERO
 var enable_grap = false
 
 func _physics_process(delta:float) -> void:
-	
 	if grap_timer == 0:
 		grap_line.queue_free()
 		grap_timer = grap_default_timer+1
 	elif grap_timer == grap_default_timer+1:
-		if %grap.is_colliding()&&Input.is_action_pressed("slam"):
-			# draw line when u slam and lookin at wall
+		if %grap.is_colliding()&&Input.is_action_pressed("grap"):
+			# draw line when u grap and lookin at walla
 			enable_grap = true
 	else:
 		grap_timer -= 1
 	
 	if enable_grap:
 		graple(delta)
-		if Input.is_action_just_released("slam"):
+		if Input.is_action_just_released("grap"):
 			enable_grap = false
 	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var direction :Vector3= (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
