@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://k0g8l20jpn5l"]
+[gd_scene load_steps=18 format=3 uid="uid://k0g8l20jpn5l"]
 
 [ext_resource type="Material" uid="uid://ntptsm338blc" path="res://materials/Brick_023.tres" id="1_0udfd"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="2_4qtao"]
 [ext_resource type="Material" uid="uid://j7782yfgmq8m" path="res://materials/Brick_069.tres" id="2_buung"]
 [ext_resource type="Sky" uid="uid://bb73jaefiwfku" path="res://skys/CloudySkyStatic.tres" id="2_fb8vh"]
 [ext_resource type="Material" uid="uid://fdx6yjtfayq3" path="res://materials/MetalPlates_008.tres" id="3_kljmn"]
+[ext_resource type="Texture2D" uid="uid://chu5u1obidfw" path="res://icon.svg" id="3_mxm08"]
 [ext_resource type="Material" uid="uid://c8xcc3vmdmxbn" path="res://materials/MetalPlates_001.tres" id="4_ltx8g"]
 [ext_resource type="Material" uid="uid://dp2iwbk6t6n6n" path="res://materials/Metal_028.tres" id="5_ewlxh"]
 [ext_resource type="AudioStream" uid="uid://d2vbmwo1pkv42" path="res://Sounds/ambience-forest-birds-wind-trees.mp3" id="5_ut7sm"]
@@ -119,17 +120,31 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -144.0
-offset_top = 58.0
+offset_top = 48.0
 offset_right = -33.0
-offset_bottom = 106.0
+offset_bottom = 96.0
 grow_horizontal = 0
-grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 27
 text = "km/h"
+
+[node name="timer" type="Label" parent="UI/Stats/UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -144.0
+offset_top = 96.0
+offset_right = -34.0
+offset_bottom = 144.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 27
+text = "time"
 
 [node name="FPS" type="Label" parent="UI/Stats/UI"]
 anchors_preset = 1
@@ -144,6 +159,11 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 text = "FPS: "
+
+[node name="Icon" type="Sprite2D" parent="UI/Stats/UI"]
+position = Vector2(576, 328)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_mxm08")
 
 [node name="Stage" type="Node3D" parent="."]
 
