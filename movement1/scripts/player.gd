@@ -122,6 +122,8 @@ func move_air(accel_dir:Vector3,prev_vel:Vector3,delta:float) -> void:#should ha
 			grav=7.5-velocity.length()
 			grav= clamp(grav,0.2,9.85)
 			velocity=accelrate(accel_dir,velocity,air_accel/1.5,max_ground_vel,delta)
+			if grav < 1:
+				action_sounds('wallrun')
 			if Input.is_action_just_pressed("ui_accept"):
 				buffer=0.1
 				velocity+=Vector3(7*get_wall_normal().x,7*get_wall_normal().y,7*get_wall_normal().z)
@@ -208,7 +210,8 @@ func _physics_process(delta:float) -> void:
 		jagain=2
 		coyote=0.19
 		velocity = move_ground(direction,velocity,delta)
-		action_sounds('steps',false,-0.8,1.2)
+		if abs(velocity.x) >1:
+			action_sounds('steps',false,-0.8,1.2)
 	else:
 		move_air(direction,velocity,delta)
 		velocity.y-=grav*delta
