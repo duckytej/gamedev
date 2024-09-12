@@ -11,17 +11,17 @@ var buffer := 0.0
 var sltime :=0.4
 var decre :=0.4
 var air_cap :=1.3
-var sagain=false
+var sagain :=false
 #var air_move=50
 @onready var head = $nek/head
 @onready var cam = $nek/head/Camera3D
 @onready var nek = $nek
-@onready var wal=$RayCast3D
-@onready var wal2 =$RayCast3D2
+@onready var wal = $RayCast3D
+@onready var wal2 = $RayCast3D2
 var bob_freq :=2
 var bob_amp :=0.08
 var t_bob := 0.0
-@onready var pcap =$CollisionShape3D
+@onready var pcap = $CollisionShape3D
 const tocrouch := 7
 var defaultH :=2
 var crouchH :=0.7
@@ -30,16 +30,33 @@ const max_step :=0.5
 var _snapped_to_stairs_last_frame :=false
 var _last_frame_was_on_floor :=-INF
 var on_floor :=false
-var dist=Vector3(0,0,0)
+var dist :=0.0
 const grap_default_timer := 0
 const grap_max_limit :int= 30
-const slamfactor=0.5
-var slaming=false
-var vel=0
+const slamfactor: =0.5
+var slaming: =false
+var vel: =0
+
+
+const sounds := {'steps':preload("res://Sounds/Footsteps/Step_Concrete_01.wav") , 'jump':preload("res://Sounds/Jump_01.wav"),
+'landing':preload("res://Sounds/Landing_02.wav"),'slide':preload("res://Sounds/Sliding_Loop.wav"),'wallrun':preload("res://Sounds/WallRun_0.wav")}
+var prev_audio := 'steps'
 
 func _process(_delta:float) -> void:
 	if Input.is_action_pressed("quit"):
 		get_tree().quit()
+
+func action_sounds(ty:String,cont := false,r1 := -0.5 ,r2 :=1.5):
+	# make audio proper
+	if !%action_audio.playing: 
+		%action_audio.stream = sounds[ty]
+		if not cont:
+			#%action_audio.pitch_scale += randf_range(r1,r2)
+			if randf() <0.4:
+				return
+		%action_audio.play()
+		prev_audio = ty
+
 
 func too(normal):
 	return normal.angle_to(Vector3.UP) > self.floor_max_angle
@@ -185,11 +202,13 @@ func _physics_process(delta:float) -> void:
 			enable_grap = false
 	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var direction :Vector3= (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
 	if is_on_floor() or _snapped_to_stairs_last_frame:
 		_last_frame_was_on_floor=Engine.get_physics_frames()
 		jagain=2
 		coyote=0.19
 		velocity = move_ground(direction,velocity,delta)
+		action_sounds('steps',false,-0.8,1.2)
 	else:
 		move_air(direction,velocity,delta)
 		velocity.y-=grav*delta
@@ -217,6 +236,7 @@ func _physics_process(delta:float) -> void:
 	else:
 		free= false
 		nek.rotation.y=lerp(nek.rotation.y,0.0,delta*5)
+		
 	if not _snap_up_stairs_check(delta):
 		move_and_slide()
 		_snap_down_to_stairs_check()
@@ -307,6 +327,7 @@ func jump() -> void:
 		coyote = 0
 		buffer = 0
 		velocity.y+= 6
+		action_sounds('jump')
 		
 
 func _input(event) -> void:
@@ -316,6 +337,7 @@ func _input(event) -> void:
 			if is_on_wall_only():
 				velocity.x*=0.5*get_wall_normal().x
 				velocity.x*=0.5*get_wall_normal().y
+				action_sounds('wallrun')
 
 func _unhandled_input(event) -> void:
 	if event is InputEventMouseMotion:
