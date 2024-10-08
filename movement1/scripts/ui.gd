@@ -6,8 +6,6 @@ var count=0
 func _ready() -> void:
 	pass
 
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("start"):
@@ -17,6 +15,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("reset"):
 		time=0
 	var text =str(Engine.get_frames_per_second())
-	$Stats/UI/FPS.text="FPS: "+text
-	$Stats/UI/speed.text="Km/h: "+str(round(player.velocity.length()))
-	$Stats/UI/timer.text="Time: "+str(round(time))
+	$UI/stat/FPS.text="FPS: "+text
+	$UI/stat/speed.text="Km/h: "+str(round(player.velocity.length()))
+	$UI/stat/timer.text="Time: "+str(round(time))
+	if Input.is_action_just_pressed("spawn"):
+		Globals.left+=1
+	$UI/stat/Label.text="left "+str(Globals.left)

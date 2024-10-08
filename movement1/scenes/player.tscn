@@ -30,7 +30,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143118, 0.0600886, 0)
 [node name="grap" type="RayCast3D" parent="nek/head/Camera3D"]
 unique_name_in_owner = true
 visibility_parent = NodePath("../../../../CollisionShape3D/MeshInstance3D")
-target_position = Vector3(0, 0, -50)
+target_position = Vector3(0, 0, -500)
 collision_mask = 3
 debug_shape_custom_color = Color(0.772549, 0, 0.188235, 1)
 debug_shape_thickness = 5
