@@ -1,13 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwdntrvx2qgv5"]
+[gd_scene load_steps=6 format=3 uid="uid://bwdntrvx2qgv5"]
 
 [ext_resource type="Script" path="res://scripts/test_body.gd" id="1_1aie6"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rv66w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x5du4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2j0tg"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_14vfs"]
+
 [node name="test" type="Node3D"]
 script = ExtResource("1_1aie6")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 100, 0, 0, 0, 0.1, 0, 3.918, 0)
+mesh = SubResource("CylinderMesh_rv66w")
+skeleton = NodePath("../Area3D")
 
 [node name="Area3D" type="Area3D" parent="."]
 
@@ -18,5 +27,11 @@ shape = SubResource("CapsuleShape3D_x5du4")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_2j0tg")
+
+[node name="RigidBody3D" type="StaticBody3D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_14vfs")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

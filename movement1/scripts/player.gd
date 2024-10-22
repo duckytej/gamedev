@@ -122,7 +122,7 @@ func move_air(accel_dir:Vector3,prev_vel:Vector3,delta:float) -> void:#should ha
 		else:
 			grav=7.5-velocity.length()
 			grav= clamp(grav,0.2,9.9)
-			velocity=accelrate(accel_dir,velocity,air_accel/1.5,max_ground_vel,delta)
+			velocity=accelrate(accel_dir*Vector3(1,0,1),velocity,air_accel/1.5,max_ground_vel,delta)
 			if grav < 1:
 				action_sounds('wallrun')
 			if Input.is_action_just_pressed("ui_accept"):
