@@ -1,17 +1,18 @@
 extends CharacterBody3D
-var ground_accel := 17
-var max_ground_vel := 50
-var air_accel := 7
+var ground_accel := 16
+var max_ground_vel := 40
+var air_accel := 6
 var max_air_vel := 100
-var friction := 2.8
-var grav := 10
+var friction := 2.9
+var grav :float = 10
 var jagain :=2
 var coyote :=0.0
 var buffer := 0.0
 var sltime :=0.4
 var decre :=0.4
 var air_cap :=1.3
-var sagain :=false
+var sagain:=false
+
 #var air_move=50
 @onready var ene=preload("res://scenes/test.tscn")
 @onready var head = $nek/head
@@ -37,8 +38,8 @@ const grap_max_limit :int= 30
 const slamfactor: =0.5
 var slaming: =false
 var vel: =0
-
-
+var preslam=0
+var dashtimer=1
 const sounds := {'steps':preload("res://Sounds/Footsteps/Step_Concrete_01.wav") , 'jump':preload("res://Sounds/Jump_01.wav"),
 'landing':preload("res://Sounds/Landing_02.wav"),'slide':preload("res://Sounds/Sliding_Loop.wav"),'wallrun':preload("res://Sounds/WallRun_0.wav")}
 var prev_audio := 'steps'
@@ -76,7 +77,7 @@ func clip(normal:Vector3,overbounce:float,_delta:float) -> void:
 
 func accelrate(accel_dir:Vector3,prev_vel:Vector3,accel:float,max_vel:int,delta:float) -> Vector3:
 	var proj_vel = prev_vel.dot(accel_dir)
-	#print(proj_vel)
+	#print(accel_dir)
 	var accel_vel = accel*delta
 	if proj_vel+accel_vel>max_vel:
 		accel_vel=max_vel-proj_vel
@@ -120,9 +121,11 @@ func move_air(accel_dir:Vector3,prev_vel:Vector3,delta:float) -> void:#should ha
 				self.motion_mode = CharacterBody3D.MOTION_MODE_GROUNDED
 			clip(get_wall_normal(), 1, delta) # Allows surf
 		else:
-			grav=7.5-velocity.length()
-			grav= clamp(grav,0.2,9.9)
-			velocity=accelrate(accel_dir*Vector3(1,0,1),velocity,air_accel/1.5,max_ground_vel,delta)
+			grav=7-velocity.length()
+			grav= clamp(grav,0.4,9.9)
+			velocity=accelrate(accel_dir,velocity,round(air_accel/2),max_ground_vel,delta)
+			if accel_dir==Vector3(0,0,0):
+				velocity+=Vector3(get_wall_normal().x,get_wall_normal().y,get_wall_normal().z)
 			if grav < 1:
 				action_sounds('wallrun')
 			if Input.is_action_just_pressed("ui_accept"):
@@ -180,7 +183,7 @@ func graple(delta: float)-> void:
 		grap_line = line(global_position+Vector3(0,0.1,0),grap_location)
 		get_tree().get_root().add_child(grap_line)
 		grap_timer = grap_default_timer
-		velocity+=(grap_location-global_position)*delta*(1/dist*2)*9
+		velocity+=(grap_location-global_position)*delta*(1/dist*2)*8
 		grav=1.5
 
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
@@ -189,7 +192,7 @@ var grap_location :Vector3  = Vector3.ZERO
 var enable_grap = false
 
 func _physics_process(delta:float) -> void:
-	print(float(grav))
+	dashtimer-=delta
 	if grap_timer == 0:
 		grap_line.queue_free()
 		grap_timer = grap_default_timer+1
@@ -210,7 +213,7 @@ func _physics_process(delta:float) -> void:
 	if is_on_floor() or _snapped_to_stairs_last_frame:
 		_last_frame_was_on_floor=Engine.get_physics_frames()
 		jagain=2
-		coyote=0.19
+		coyote=0.2
 		velocity = move_ground(direction,velocity,delta)
 		if abs(input_dir.length()) >1:
 			action_sounds('steps',false,-0.8,1.2)
@@ -220,20 +223,22 @@ func _physics_process(delta:float) -> void:
 		#velocity = move_air(direction,velocity,delta)
 		if !is_on_wall():
 			coyote-=delta
-			grav=10
+			grav=9.8
 	if Input.is_action_just_pressed("ui_accept"):
 		if jagain==1:
 			velocity.y+= 8
 			jagain-=1
 		else:
-			buffer=0.17
+			buffer=0.15
+			
 			
 	else:
 		buffer-=delta
 	t_bob += delta* velocity.length() * float(is_on_floor())
 	cam.transform.origin = headbob(t_bob)
+	
+	dash(delta)
 	jump()
-	dash()
 	generate()
 	crouch(delta)
 	if sltime>=0.4:
@@ -283,54 +288,63 @@ func line(pos1: Vector3, pos2: Vector3, color := Color.WHITE_SMOKE, _persist_ms 
 	return mesh_instance
 
 
-func crouch(delta:float) -> void:#needs resructuring without loosing functionality
-	#print(vel)
-	var preslam=0
+func crouch(delta:float) -> void:
+	var floor_below : bool = %below.is_colliding() and not too(%below.get_collision_normal())
 	if Input.is_action_just_pressed("crouch"):
-		preslam=int(velocity.y)
+		preslam= velocity.y
 	if Input.is_action_pressed("crouch")==false&&is_on_floor():
 		sagain=false
 	if !is_on_floor()&&Input.is_action_pressed("crouch")&&coyote<0.1&&buffer<0.1:
-		vel=int(velocity.y)
 		velocity.y-=100*delta
+		vel=int(velocity.y)
 		slaming=true
+		if Input.is_action_just_pressed("ui_accept"):
+			if jagain==1:
+				velocity.y+= 8
+				jagain-=1
 	#if %below.is_colliding()&&Input.is_action_just_pressed("crouch"):
 		#velocity*=(velocity.y)
-	if is_on_floor_only()&&slaming==true&&sagain==false&&(velocity.length()<11-velocity.dot((get_floor_normal()))):
-			velocity.x*=1.3
-			velocity.z*=1.3
-			velocity.y+=get_floor_normal().y*slamfactor*vel*delta*-1*50
-			slaming=false
-			sagain=true
+		
+		
 	if Input.is_action_pressed("crouch"):
 		pcap.shape.height-=tocrouch*delta
 		if(velocity.length()<11-velocity.dot((get_floor_normal()))):
 			ground_accel=10
-			
-			#print(get_floor_normal()*slamfactor*vel*delta*-1,vel)
+			%action_audio.stop()
+			if is_on_floor()&&slaming==true&&sagain==false:
+				velocity.x*=1.3
+				velocity.y*=1.3
+				velocity.y+=get_floor_normal().y*slamfactor*vel*delta*-1*50
+				slaming=false
+				sagain=true
 			#max_ground_vel=20
 			friction=4.2
 		elif sltime>0:
 			cam.fov=80
 			friction=0.2
 			action_sounds("slide")
-			#print(jagain)
 			sltime-=decre*delta
+			jagain=2
+			if is_on_floor():
+				slaming=false
+				coyote=0.1
 			if Input.is_action_just_pressed("ui_accept"):#boost
 				velocity.y+=3
+				action_sounds("jump")
 		if sltime<=0:
 			#print("slow")
 			cam.fov=75
 			friction=4
 			%action_audio.stop()
 	elif Input.is_action_just_released("crouch")||sltime<0:
-		ground_accel=20
+		ground_accel=16
 		max_ground_vel=50
 		cam.fov=75
 		friction=2.5
 		sltime=0.4
-		velocity.y=preslam-grav
 		%action_audio.stop()
+		if !floor_below:
+			velocity.y=preslam
 		
 	elif not is_on_ceiling():
 		pcap.shape.height+=tocrouch*delta
@@ -377,16 +391,17 @@ func headbob(time) -> Vector3:
 
 
 func generate():
+	var front=-head.transform.basis.z.normalized()
 	if Input.is_action_just_pressed("spawn"):
 		var e=ene.instantiate()
-		e.position=self.position+Vector3(0,0,-4)
+		e.global_transform.origin = self.position + front *3
 		
 		get_parent().add_child(e)
-		
-func dash():
-	if Input.is_action_pressed("dash"):
-		var g=-cam.transform.basis.z.normalized()
-		print(g)
-		#velocity=g*(velocity.length()+1)
-
-		
+func dash(delta):
+	print(dashtimer)
+	var speed = 1000+velocity.length()*10
+	var g=-head.transform.basis.z.normalized()
+	if Input.is_action_just_pressed("dash")&&dashtimer<0&&!is_on_floor():
+		dashtimer=1
+		var move=g*speed*delta
+		velocity+=move
