@@ -123,7 +123,6 @@ func move_air(accel_dir:Vector3,prev_vel:Vector3,delta:float) -> void:#should ha
 		else:
 			grav=7-velocity.length()
 			grav= clamp(grav,0.4,9.9)
-			velocity=accelrate(accel_dir,velocity,round(air_accel/2),max_ground_vel,delta)
 			if accel_dir==Vector3(0,0,0):
 				velocity+=Vector3(get_wall_normal().x,get_wall_normal().y,get_wall_normal().z)
 			if grav < 1:
@@ -183,7 +182,7 @@ func graple(delta: float)-> void:
 		grap_line = line(global_position+Vector3(0,0.1,0),grap_location)
 		get_tree().get_root().add_child(grap_line)
 		grap_timer = grap_default_timer
-		velocity+=(grap_location-global_position)*delta*(1/dist*2)*8
+		velocity+=(grap_location-global_position)*delta*(1/dist*2)*8.5
 		grav=1.5
 
 var grap_line = line(Vector3.ZERO,Vector3.ZERO)
@@ -395,13 +394,12 @@ func generate():
 	if Input.is_action_just_pressed("spawn"):
 		var e=ene.instantiate()
 		e.global_transform.origin = self.position + front *3
-		
 		get_parent().add_child(e)
 func dash(delta):
-	print(dashtimer)
+	#print(dashtimer)
 	var speed = 1000+velocity.length()*10
 	var g=-head.transform.basis.z.normalized()
 	if Input.is_action_just_pressed("dash")&&dashtimer<0&&!is_on_floor():
-		dashtimer=1
+		dashtimer=1.5
 		var move=g*speed*delta
 		velocity+=move
