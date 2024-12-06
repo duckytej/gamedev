@@ -393,7 +393,7 @@ func generate():
 	var front=-head.transform.basis.z.normalized()
 	if Input.is_action_just_pressed("spawn"):
 		var e=ene.instantiate()
-		e.global_transform.origin = self.position + front *3
+		e.global_transform.origin = self.position - front*0.1
 		get_parent().add_child(e)
 func dash(delta):
 	#print(dashtimer)

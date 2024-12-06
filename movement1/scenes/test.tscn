@@ -1,21 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwdntrvx2qgv5"]
+[gd_scene load_steps=5 format=3 uid="uid://bwdntrvx2qgv5"]
 
 [ext_resource type="Script" path="res://scripts/test_body.gd" id="1_1aie6"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_rv66w"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 100.0
+radial_segments = 5
+rings = 3
+cap_top = false
+cap_bottom = false
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x5du4"]
 height = 1.86328
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2j0tg"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_14vfs"]
-
 [node name="test" type="Node3D"]
 script = ExtResource("1_1aie6")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 100, 0, 0, 0, 0.1, 0, 3.918, 0)
+transform = Transform3D(1, 0, 0, 0, 10, 0, 0, 0, 1, 0, 3.918, 0)
 mesh = SubResource("CylinderMesh_rv66w")
 skeleton = NodePath("../Area3D")
 
@@ -32,7 +37,10 @@ mesh = SubResource("CapsuleMesh_2j0tg")
 [node name="RigidBody3D" type="StaticBody3D" parent="."]
 collision_layer = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-shape = SubResource("SphereShape3D_14vfs")
+[node name="SpawnProtectionTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+autostart = true
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="SpawnProtectionTimer" to="." method="_on_spawn_protection_timer_timeout"]
