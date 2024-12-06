@@ -5,6 +5,7 @@
 [sub_resource type="CylinderMesh" id="CylinderMesh_rv66w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x5du4"]
+height = 1.86328
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2j0tg"]
 
@@ -21,7 +22,7 @@ skeleton = NodePath("../Area3D")
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_x5du4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
