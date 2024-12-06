@@ -4040,6 +4040,7 @@ grow_vertical = 2
 text = "wasd-move
 r-reset
 space-jump
+mmb-rotate neck
 ctrl-croutch/slam/slide
 f=start/stop timer
 q=place target
