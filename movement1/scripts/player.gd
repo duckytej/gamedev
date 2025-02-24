@@ -123,6 +123,7 @@ func move_air(accel_dir:Vector3,prev_vel:Vector3,delta:float) -> void:#should ha
 		else:
 			grav=7-velocity.length()
 			grav= clamp(grav,0.4,9.9)
+			velocity=accelrate(accel_dir,velocity,int(round(air_accel/2)),max_ground_vel,delta)
 			if accel_dir==Vector3(0,0,0):
 				velocity+=Vector3(get_wall_normal().x,get_wall_normal().y,get_wall_normal().z)
 			if grav < 1:
