@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dqkitv7hrfyus"]
 
-[ext_resource type="Script" path="res://scripts/node_3d.gd" id="1_nfki4"]
-[ext_resource type="Script" path="res://scripts/character_body_3d.gd" id="2_1lc4r"]
+[ext_resource type="Script" uid="uid://c1ttx288u6i15" path="res://scripts/node_3d.gd" id="1_nfki4"]
+[ext_resource type="Script" uid="uid://c7jxgoou0gwev" path="res://scripts/character_body_3d.gd" id="2_1lc4r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rrrc5"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
