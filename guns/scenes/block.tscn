@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwwgbpsa2e2sv"]
+
+[sub_resource type="GDScript" id="GDScript_3gu0n"]
+script/source = "extends Node3D
+#var height = 1
+#
+#func _ready() -> void:
+	#$MeshInstance3D.mesh = BoxMesh.new() #Vector3(1,height/2,1)
+	#$MeshInstance3D.mesh.size = Vector3(1,height/2,1)
+	#var boxsh = BoxShape3D.new()
+	#boxsh.size = Vector3(1,height/2,1)
+	#$StaticBody3D/CollisionShape3D.shape = boxsh
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7jm3e"]
+metallic = 0.8
+metallic_specular = 0.51
+
+[sub_resource type="BoxMesh" id="BoxMesh_6qv8p"]
+material = SubResource("StandardMaterial3D_7jm3e")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1h4qm"]
+
+[node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_3gu0n")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.283435, 0)
+mesh = SubResource("BoxMesh_6qv8p")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295604, 0)
+shape = SubResource("BoxShape3D_1h4qm")
