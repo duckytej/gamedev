@@ -1,0 +1,83 @@
+[gd_scene load_steps=15 format=3 uid="uid://dtxdlra3w4lbe"]
+
+[ext_resource type="Script" uid="uid://dlsqw8x7cgd3g" path="res://player/scripts/player.gd" id="1_player"]
+[ext_resource type="Resource" path="res://core/config/player_config.tres" id="2_config"]
+[ext_resource type="Script" path="res://player/scripts/player_input.gd" id="3_input"]
+[ext_resource type="Script" path="res://player/states/state_machine.gd" id="4_machine"]
+[ext_resource type="Script" path="res://player/states/idle.gd" id="5_idle"]
+[ext_resource type="Script" path="res://player/states/walk.gd" id="6_walk"]
+[ext_resource type="Script" path="res://player/states/run.gd" id="7_run"]
+[ext_resource type="Script" path="res://player/states/jump.gd" id="8_jump"]
+[ext_resource type="Script" path="res://player/states/fall.gd" id="9_fall"]
+[ext_resource type="Script" path="res://player/states/land.gd" id="10_land"]
+[ext_resource type="Script" path="res://player/states/slide.gd" id="11_slide"]
+[ext_resource type="Script" path="res://player/states/wall_run.gd" id="12_wallrun"]
+[ext_resource type="Script" path="res://player/states/dash.gd" id="13_dash"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" unique_id=1954238502 groups=["player"]]
+floor_snap_length = 0.3
+script = ExtResource("1_player")
+config = ExtResource("2_config")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1510522884]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Neck" type="Node3D" parent="." unique_id=1557197751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Neck" unique_id=1569004810]
+keep_aspect = 0
+current = true
+fov = 140.0
+far = 500.0
+
+[node name="Input" type="Node" parent="."]
+script = ExtResource("3_input")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("4_machine")
+initial_state = &"Idle"
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("5_idle")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("6_walk")
+
+[node name="Run" type="Node" parent="States"]
+script = ExtResource("7_run")
+
+[node name="Jump" type="Node" parent="States"]
+script = ExtResource("8_jump")
+
+[node name="Fall" type="Node" parent="States"]
+script = ExtResource("9_fall")
+
+[node name="Land" type="Node" parent="States"]
+script = ExtResource("10_land")
+
+[node name="Slide" type="Node" parent="States"]
+script = ExtResource("11_slide")
+
+[node name="WallRun" type="Node" parent="States"]
+script = ExtResource("12_wallrun")
+
+[node name="Dash" type="Node" parent="States"]
+script = ExtResource("13_dash")
+
+[node name="StairProbe" type="Node3D" parent="."]
+
+[node name="StepAhead" type="RayCast3D" parent="StairProbe"]
+target_position = Vector3(0, -0.75, 0)
+
+[node name="FloorBelow" type="RayCast3D" parent="StairProbe"]
+position = Vector3(0, 0.1, 0)
+target_position = Vector3(0, -0.75, 0)
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="." unique_id=2090353834]
+volume_db = -8.0

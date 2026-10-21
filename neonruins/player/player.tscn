@@ -1,0 +1,165 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://components/stamina_component.gd" id="3_stamina"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="5_hitbox"]
+[ext_resource type="Script" path="res://combat/ranged_system.gd" id="6_ranged"]
+[ext_resource type="Script" path="res://player/states/idle.gd" id="7_idle"]
+[ext_resource type="Script" path="res://player/states/walk.gd" id="8_walk"]
+[ext_resource type="Script" path="res://player/states/crouch.gd" id="9_crouch"]
+[ext_resource type="Script" path="res://player/states/jump.gd" id="10_jump"]
+[ext_resource type="Script" path="res://player/states/in_air.gd" id="11_inair"]
+[ext_resource type="Script" path="res://player/states/wall_run.gd" id="12_wallrun"]
+[ext_resource type="Script" path="res://player/states/slide.gd" id="13_slide"]
+[ext_resource type="Script" path="res://player/states/dash.gd" id="14_dash"]
+[ext_resource type="Script" path="res://player/states/grapple.gd" id="15_grapple"]
+[ext_resource type="Script" path="res://player/states/melee_attack.gd" id="16_melee"]
+[ext_resource type="Script" path="res://player/states/ranged_attack.gd" id="17_ranged"]
+[ext_resource type="Script" path="res://player/states/hurt.gd" id="18_hurt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_col"]
+radius = 0.4
+height = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(0.6, 1.8, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="mat_player"]
+albedo_color = Color(0.2, 0.2, 0.25, 1)
+roughness = 0.6
+metallic = 0.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_attack"]
+size = Vector3(1.0, 1.0, 2.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurtbox"]
+radius = 0.55
+height = 2.0
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_col")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_body")
+material_override = SubResource("mat_player")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+fov = 85.0
+near = 0.05
+
+[node name="GrappleRaycast" type="RayCast3D" parent="CameraPivot/Camera3D"]
+target_position = Vector3(0, 0, -35)
+collision_mask = 1
+
+[node name="RayCastWallLeft" type="RayCast3D" parent="."]
+target_position = Vector3(-0.7, 0, 0)
+collision_mask = 1
+enabled = true
+
+[node name="RayCastWallRight" type="RayCast3D" parent="."]
+target_position = Vector3(0.7, 0, 0)
+collision_mask = 1
+enabled = true
+
+[node name="RayCastFloor" type="RayCast3D" parent="."]
+target_position = Vector3(0, -0.6, 0)
+collision_mask = 1
+enabled = true
+
+[node name="RayCastCeiling" type="RayCast3D" parent="."]
+target_position = Vector3(0, 2.2, 0)
+collision_mask = 1
+enabled = true
+
+[node name="RayCastStair" type="RayCast3D" parent="."]
+target_position = Vector3(0, -0.1, 0.6)
+collision_mask = 1
+enabled = true
+
+[node name="AttackPivot" type="Node3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, -0.2, -1.8)
+
+[node name="AttackHitbox" type="Area3D" parent="CameraPivot/Camera3D/AttackPivot"]
+script = ExtResource("5_hitbox")
+collision_layer = 2
+collision_mask = 4
+monitorable = true
+
+[node name="AttackShape" type="CollisionShape3D" parent="CameraPivot/Camera3D/AttackPivot/AttackHitbox"]
+shape = SubResource("BoxShape3D_attack")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+max_health = 100.0
+invincibility_time = 0.5
+
+[node name="StaminaComponent" type="Node" parent="."]
+script = ExtResource("3_stamina")
+max_stamina = 100.0
+regen_rate = 25.0
+regen_delay = 1.0
+exhaustion_penalty = 2.5
+
+[node name="HurtboxComponent" type="Area3D" parent="."]
+script = ExtResource("4_hurtbox")
+collision_layer = 4
+collision_mask = 2
+monitorable = true
+
+[node name="HurtboxShape" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hurtbox")
+
+[node name="RangedSystem" type="Node" parent="."]
+script = ExtResource("6_ranged")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("7_idle")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("8_walk")
+
+[node name="Crouch" type="Node" parent="States"]
+script = ExtResource("9_crouch")
+
+[node name="Jump" type="Node" parent="States"]
+script = ExtResource("10_jump")
+
+[node name="InAir" type="Node" parent="States"]
+script = ExtResource("11_inair")
+
+[node name="WallRun" type="Node" parent="States"]
+script = ExtResource("12_wallrun")
+
+[node name="Slide" type="Node" parent="States"]
+script = ExtResource("13_slide")
+
+[node name="Dash" type="Node" parent="States"]
+script = ExtResource("14_dash")
+
+[node name="Grapple" type="Node" parent="States"]
+script = ExtResource("15_grapple")
+
+[node name="MeleeAttack" type="Node" parent="States"]
+script = ExtResource("16_melee")
+
+[node name="RangedAttack" type="Node" parent="States"]
+script = ExtResource("17_ranged")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("18_hurt")

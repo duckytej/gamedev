@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ThreatConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/config/threat_config.gd" id="1_threat_config"]
+
+[resource]
+script = ExtResource("1_threat_config")
+forward_half_angle_deg = 70.0
+peripheral_end_angle_deg = 110.0
+max_distance = 30.0
+near_distance = 4.0
+far_distance = 22.0
+detect_interval = 0.05
+los_collision_mask = 1
+highlight_color = Color(1, 0.18, 0.16, 1)
+min_alpha = 0.12
+max_alpha = 0.9

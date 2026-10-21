@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://yjn0nl5115fk"]
+
+[ext_resource type="Script" uid="uid://dqli8gcw0mmdm" path="res://scripts/world.gd" id="1_nnsk1"]
+[ext_resource type="Script" uid="uid://gok3ns4njgkj" path="res://scripts/player.gd" id="2_rwgxs"]
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+
+[sub_resource type="Environment" id="Environment_tlwt5"]
+background_mode = 2
+sky = SubResource("Sky_fj7yv")
+tonemap_mode = 3
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.371862, 0.403379, 0.452918, 1)
+fog_sun_scatter = 0.1
+fog_density = 0.05
+fog_height = 0.1
+fog_height_density = 0.5
+adjustment_enabled = true
+adjustment_brightness = 1.01
+adjustment_contrast = 1.2
+adjustment_saturation = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_aqk2v"]
+size = Vector3(50, 0.5, 50)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rwgxs"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4wyf3"]
+
+[node name="world" type="Node3D"]
+script = ExtResource("1_nnsk1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tlwt5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.286093, -0.790618, 0.541363, -0.160211, 0.517556, 0.840516, -0.944713, -0.327198, 0.0214034, 33.3204, 24.2601, 0.355253)
+light_volumetric_fog_energy = 5.0
+shadow_enabled = true
+directional_shadow_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_aqk2v")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 96, 0)
+script = ExtResource("2_rwgxs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_rwgxs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_4wyf3")
+
+[node name="head" type="Node3D" parent="CharacterBody3D"]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+fov = 80.0
+
+[node name="grap" type="RayCast3D" parent="CharacterBody3D/head/Camera3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.564949, 0)
+target_position = Vector3(0, 0, -100)
+debug_shape_thickness = 5
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]

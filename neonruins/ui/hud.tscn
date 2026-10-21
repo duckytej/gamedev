@@ -1,0 +1,414 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFrame"]
+bg_color = Color(0.05, 0.05, 0.08, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0, 0.8, 0.7, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxBarBG"]
+bg_color = Color(0.08, 0.08, 0.12, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.15, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxHealthFill"]
+bg_color = Color(0.9, 0.2, 0.25, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxStaminaFill"]
+bg_color = Color(0.0, 0.85, 0.7, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxCrosshair"]
+bg_color = Color(0.0, 0.0, 0.0, 0.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 1.0, 1.0, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxLockOn"]
+bg_color = Color(0.0, 0.0, 0.0, 0.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 0.0, 0.5, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxDebug"]
+bg_color = Color(0.02, 0.02, 0.03, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0, 0.6, 0.5, 0.4)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+layer = 10
+
+[node name="VitalsContainer" type="HBoxContainer" parent="."]
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 140.0
+theme_override_constants/separation = 15
+
+[node name="HealthFrame" type="PanelContainer" parent="VitalsContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 80)
+theme_override_styles/panel = SubResource("StyleBoxFrame")
+
+[node name="HealthVBox" type="VBoxContainer" parent="VitalsContainer/HealthFrame"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HealthHeader" type="HBoxContainer" parent="VitalsContainer/HealthFrame/HealthVBox"]
+layout_mode = 2
+
+[node name="HealthIcon" type="Label" parent="VitalsContainer/HealthFrame/HealthVBox/HealthHeader"]
+layout_mode = 2
+text = "♥"
+theme_override_colors/font_color = Color(1.0, 0.3, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="HealthLabel" type="Label" parent="VitalsContainer/HealthFrame/HealthVBox/HealthHeader"]
+layout_mode = 2
+text = "VITALS"
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="HealthSpacer" type="Control" parent="VitalsContainer/HealthFrame/HealthVBox/HealthHeader"]
+layout_mode = 3
+anchors_preset = 15
+grow_horizontal = 2
+
+[node name="HealthValue" type="Label" parent="VitalsContainer/HealthFrame/HealthVBox/HealthHeader"]
+layout_mode = 2
+text = "100 / 100"
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+
+[node name="HealthBarContainer" type="PanelContainer" parent="VitalsContainer/HealthFrame/HealthVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+theme_override_styles/panel = SubResource("StyleBoxBarBG")
+
+[node name="HealthBar" type="ProgressBar" parent="VitalsContainer/HealthFrame/HealthVBox/HealthBarContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxHealthFill")
+theme_override_styles/background = SubResource("StyleBoxBarBG")
+
+[node name="StaminaFrame" type="PanelContainer" parent="VitalsContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 80)
+theme_override_styles/panel = SubResource("StyleBoxFrame")
+
+[node name="StaminaVBox" type="VBoxContainer" parent="VitalsContainer/StaminaFrame"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="StaminaHeader" type="HBoxContainer" parent="VitalsContainer/StaminaFrame/StaminaVBox"]
+layout_mode = 2
+
+[node name="StaminaIcon" type="Label" parent="VitalsContainer/StaminaFrame/StaminaVBox/StaminaHeader"]
+layout_mode = 2
+text = "⚡"
+theme_override_colors/font_color = Color(0.0, 1.0, 0.8, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="StaminaLabel" type="Label" parent="VitalsContainer/StaminaFrame/StaminaVBox/StaminaHeader"]
+layout_mode = 2
+text = "STAMINA"
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="StaminaSpacer" type="Control" parent="VitalsContainer/StaminaFrame/StaminaVBox/StaminaHeader"]
+layout_mode = 3
+anchors_preset = 15
+grow_horizontal = 2
+
+[node name="StaminaValue" type="Label" parent="VitalsContainer/StaminaFrame/StaminaVBox/StaminaHeader"]
+layout_mode = 2
+text = "100 / 100"
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+
+[node name="StaminaBarContainer" type="PanelContainer" parent="VitalsContainer/StaminaFrame/StaminaVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+theme_override_styles/panel = SubResource("StyleBoxBarBG")
+
+[node name="StaminaBar" type="ProgressBar" parent="VitalsContainer/StaminaFrame/StaminaVBox/StaminaBarContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxStaminaFill")
+theme_override_styles/background = SubResource("StyleBoxBarBG")
+
+[node name="CrosshairContainer" type="CenterContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="PanelContainer" parent="CrosshairContainer"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxCrosshair")
+
+[node name="CrosshairInner" type="ColorRect" parent="CrosshairContainer/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -1.5
+offset_top = -8.0
+offset_right = 1.5
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 1.0, 1.0, 0.9)
+
+[node name="CrosshairInner2" type="ColorRect" parent="CrosshairContainer/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -1.5
+offset_top = 4.0
+offset_right = 1.5
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 1.0, 1.0, 0.9)
+
+[node name="CrosshairInner3" type="ColorRect" parent="CrosshairContainer/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -8.0
+offset_top = -1.5
+offset_right = -4.0
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 1.0, 1.0, 0.9)
+
+[node name="CrosshairInner4" type="ColorRect" parent="CrosshairContainer/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = 4.0
+offset_top = -1.5
+offset_right = 8.0
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 1.0, 1.0, 0.9)
+
+[node name="LockOnContainer" type="CenterContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LockOnIndicator" type="PanelContainer" parent="LockOnContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxLockOn")
+
+[node name="LockOnInner" type="ColorRect" parent="LockOnContainer/LockOnIndicator"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -2.0
+offset_top = -14.0
+offset_right = 2.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 0.0, 0.5, 0.8)
+
+[node name="LockOnInner2" type="ColorRect" parent="LockOnContainer/LockOnIndicator"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -2.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 0.0, 0.5, 0.8)
+
+[node name="LockOnInner3" type="ColorRect" parent="LockOnContainer/LockOnIndicator"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -14.0
+offset_top = -2.0
+offset_right = -8.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 0.0, 0.5, 0.8)
+
+[node name="LockOnInner4" type="ColorRect" parent="LockOnContainer/LockOnIndicator"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = 8.0
+offset_top = -2.0
+offset_right = 14.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.0, 0.0, 0.5, 0.8)
+
+[node name="DebugContainer" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -240.0
+offset_top = 20.0
+offset_right = -10.0
+offset_bottom = 120.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxDebug")
+
+[node name="DebugVBox" type="VBoxContainer" parent="DebugContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="FPS" type="Label" parent="DebugContainer/DebugVBox"]
+layout_mode = 2
+text = "FPS: 0"
+theme_override_colors/font_color = Color(0.0, 1.0, 0.8, 0.9)
+theme_override_font_sizes/font_size = 13
+
+[node name="Speed" type="Label" parent="DebugContainer/DebugVBox"]
+layout_mode = 2
+text = "VEL: 0 km/h"
+theme_override_colors/font_color = Color(0.8, 1.0, 0.9, 0.9)
+theme_override_font_sizes/font_size = 13
+
+[node name="State" type="Label" parent="DebugContainer/DebugVBox"]
+layout_mode = 2
+text = "STATE: IDLE"
+theme_override_colors/font_color = Color(1.0, 0.9, 0.5, 0.9)
+theme_override_font_sizes/font_size = 13
+
+[node name="Pos" type="Label" parent="DebugContainer/DebugVBox"]
+layout_mode = 2
+text = "POS: 0, 0, 0"
+theme_override_colors/font_color = Color(0.7, 0.9, 1.0, 0.8)
+theme_override_font_sizes/font_size = 12
+
+[node name="AmmoContainer" type="PanelContainer" parent="."]
+anchors_preset = 2
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFrame")
+
+[node name="AmmoVBox" type="VBoxContainer" parent="AmmoContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="AmmoHeader" type="HBoxContainer" parent="AmmoContainer/AmmoVBox"]
+layout_mode = 2
+
+[node name="AmmoIcon" type="Label" parent="AmmoContainer/AmmoVBox/AmmoHeader"]
+layout_mode = 2
+text = "◈"
+theme_override_colors/font_color = Color(1.0, 0.6, 0.0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="AmmoLabel" type="Label" parent="AmmoContainer/AmmoVBox/AmmoHeader"]
+layout_mode = 2
+text = "AMMO"
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="AmmoSpacer" type="Control" parent="AmmoContainer/AmmoVBox/AmmoHeader"]
+layout_mode = 3
+anchors_preset = 15
+grow_horizontal = 2
+
+[node name="AmmoValue" type="Label" parent="AmmoContainer/AmmoVBox/AmmoHeader"]
+layout_mode = 2
+text = "30 / 30"
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+
+[node name="AmmoBarContainer" type="PanelContainer" parent="AmmoContainer/AmmoVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 12)
+theme_override_styles/panel = SubResource("StyleBoxBarBG")
+
+[node name="AmmoBar" type="ProgressBar" parent="AmmoContainer/AmmoVBox/AmmoBarContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 10)
+max_value = 30.0
+value = 30.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxStaminaFill")
+theme_override_styles/background = SubResource("StyleBoxBarBG")

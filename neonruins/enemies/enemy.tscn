@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://enemies/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="3_hurtbox"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="4_hitbox"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_col"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+radius = 0.6
+height = 2.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(1.3, 1.3, 1.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(0.8, 1.8, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="mat_enemy"]
+albedo_color = Color(0.45, 0.15, 0.15, 1)
+roughness = 0.8
+
+[node name="Enemy" type="CharacterBody3D"]
+script = ExtResource("1_enemy")
+move_speed = 7.0
+attack_range = 2.5
+detection_range = 30.0
+attack_damage = 18.0
+attack_cooldown = 1.8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_col")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_body")
+material_override = SubResource("mat_enemy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+max_health = 60.0
+invincibility_time = 0.3
+
+[node name="HurtboxComponent" type="Area3D" parent="."]
+script = ExtResource("3_hurtbox")
+collision_layer = 4
+collision_mask = 2
+monitorable = true
+
+[node name="HurtboxShape" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="HitboxComponent" type="Area3D" parent="."]
+script = ExtResource("4_hitbox")
+damage = 18.0
+collision_layer = 2
+collision_mask = 4
+monitorable = true
+
+[node name="HitboxShape" type="CollisionShape3D" parent="HitboxComponent"]
+shape = SubResource("BoxShape3D_hit")

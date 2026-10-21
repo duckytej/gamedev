@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ProjectionProfile" format=3 uid="uid://e4r3kcrjhwkh"]
+
+[ext_resource type="Script" uid="uid://cq6ln3x7cfvf5" path="res://core/config/projection_profile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+strength = 0.2
+ca_amount = 0.04

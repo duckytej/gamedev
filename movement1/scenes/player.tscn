@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://b36iqmpwoob8e"]
+
+[ext_resource type="Script" uid="uid://bl1l1gab3kan1" path="res://scripts/player.gd" id="1_aka16"]
+[ext_resource type="AudioStream" uid="uid://dkomonpu17na4" path="res://Sounds/Footsteps/Step_Concrete_01.wav" id="2_vcnju"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_56gj5"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8ua7n"]
+
+[node name="player" type="CharacterBody3D" unique_id=986267930]
+collision_mask = 3
+script = ExtResource("1_aka16")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1253136193]
+shape = SubResource("CapsuleShape3D_56gj5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=2114391811]
+layers = 3
+mesh = SubResource("CapsuleMesh_8ua7n")
+
+[node name="nek" type="Node3D" parent="." unique_id=635999060]
+
+[node name="head" type="Node3D" parent="nek" unique_id=44372491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0)
+
+[node name="Camera3D" type="Camera3D" parent="nek/head" unique_id=1597180672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143118, 0.0600886, 0)
+
+[node name="grap" type="RayCast3D" parent="nek/head/Camera3D" unique_id=575436915]
+unique_name_in_owner = true
+visibility_parent = NodePath("../../../../CollisionShape3D/MeshInstance3D")
+target_position = Vector3(0, 0, -500)
+collision_mask = 3
+debug_shape_custom_color = Color(0.772549, 0, 0.188235, 1)
+debug_shape_thickness = 5
+
+[node name="action_audio" type="AudioStreamPlayer3D" parent="nek/head" unique_id=642999930]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.495225, 0.275403)
+stream = ExtResource("2_vcnju")
+volume_db = 52.733
+autoplay = true
+
+[node name="below" type="RayCast3D" parent="." unique_id=1655871150]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.990259, 0)
+target_position = Vector3(0, -0.75, 0)
+collision_mask = 3
+
+[node name="ahead" type="RayCast3D" parent="." unique_id=1542389638]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.296313, -0.713339)
+target_position = Vector3(0, -0.55, 0)
+collision_mask = 3
+
+[node name="RayCast3D2" type="RayCast3D" parent="." unique_id=1348554201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.514379, 0, 0)
+target_position = Vector3(-0.5, 0, 0)
+collision_mask = 3
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1051922138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475026, 0, 0)
+target_position = Vector3(0.5, 0, 0)
+collision_mask = 3

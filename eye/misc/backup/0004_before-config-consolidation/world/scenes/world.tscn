@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://b8oac7t05opdg"]
+
+[ext_resource type="PackedScene" uid="uid://7l5j66jr6abv" path="res://addons/screenspace_projection/screenspace_projection.tscn" id="1_projection"]
+[ext_resource type="Script" uid="uid://buv4r40tfsfts" path="res://core/projection_controller.gd" id="3_controller"]
+[ext_resource type="Resource" uid="uid://e4r3kcrjhwkh" path="res://core/config/projection_profile.tres" id="4_profile"]
+[ext_resource type="Script" uid="uid://dfqxj7psxulbe" path="res://core/post_fx_controller.gd" id="5_postfx"]
+[ext_resource type="Resource" path="res://core/config/post_fx_profile.tres" id="6_postfx_profile"]
+[ext_resource type="Script" uid="uid://bvmir3cdo0ifp" path="res://core/ui/hud.gd" id="7_hud"]
+[ext_resource type="Shader" uid="uid://cj27kb810e15d" path="res://addons/eye_postfx/eye_postfx.gdshader" id="8_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_postfx"]
+shader = ExtResource("8_shader")
+shader_parameter/enabled = true
+shader_parameter/sharpen_amount = 0.45
+shader_parameter/grain_amount = 0.0
+
+[node name="world" type="Node3D" unique_id=590164896]
+
+[node name="ScreenSpaceProjection" parent="." unique_id=1977046910 groups=["projection"] instance=ExtResource("1_projection")]
+
+[node name="ProjectionController" type="Node" parent="." unique_id=929623418]
+script = ExtResource("3_controller")
+profile = ExtResource("4_profile")
+
+[node name="PostFx" type="CanvasLayer" parent="." unique_id=507954799]
+layer = 0
+
+[node name="Screen" type="ColorRect" parent="PostFx" unique_id=607487830]
+material = SubResource("ShaderMaterial_postfx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_postfx")
+profile = ExtResource("6_postfx_profile")
+
+[node name="Hud" type="CanvasLayer" parent="." unique_id=2083175014]
+
+[node name="CrosshairCenter" type="CenterContainer" parent="Hud" unique_id=80773877]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Crosshair" type="Label" parent="Hud/CrosshairCenter" unique_id=771039751]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.85)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.6)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 26
+text = "+"
+
+[node name="Stats" type="VBoxContainer" parent="Hud" unique_id=824138887]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = 96.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+script = ExtResource("7_hud")
+
+[node name="Position" type="Label" parent="Hud/Stats" unique_id=1323159690]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.93, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "POS    0.0, 0.0, 0.0"
+horizontal_alignment = 2
+
+[node name="State" type="Label" parent="Hud/Stats" unique_id=232687960]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.93, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "STATE  —"
+horizontal_alignment = 2
+
+[node name="Fps" type="Label" parent="Hud/Stats" unique_id=54096376]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.93, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "FPS    0"
+horizontal_alignment = 2
+
+[node name="Threat" type="Label" parent="Hud/Stats" unique_id=426310664]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.5, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "TGT    —"
+horizontal_alignment = 2
+
+[node name="Highlight" type="Label" parent="Hud/Stats" unique_id=250477112]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.4, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "HILITE 0"
+horizontal_alignment = 2
+
+[node name="Hint" type="Label" parent="Hud" unique_id=1029988424]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.901961, 0.94902, 1, 0.75)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 15
+text = "WASD move  ·  Mouse look  ·  Space jump  ·  Shift sprint  ·  C slide  ·  Q dash  ·  Esc release cursor"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Hud" unique_id=1628314198]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 320.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.901961, 0.94902, 1, 0.85)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "eye — test map"

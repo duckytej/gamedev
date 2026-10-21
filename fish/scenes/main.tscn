@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://c2val3o4q5r6"]
+
+[ext_resource type="Script" uid="uid://bjgohdloans1i" path="res://scripts/main.gd" id="0_main"]
+[ext_resource type="Script" uid="uid://ctfsc7rrs35dq" path="res://scripts/world/voxel_world.gd" id="1_world"]
+[ext_resource type="Script" uid="uid://bkdrjj6irnyu2" path="res://scripts/world/city_generator.gd" id="2_gen"]
+[ext_resource type="PackedScene" uid="uid://b1t8k2m3n4p5" path="res://scenes/player.tscn" id="3_player"]
+[ext_resource type="Script" uid="uid://dl43e3snqex12" path="res://scripts/environment/atmosphere_manager.gd" id="4_atmo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.04, 0.04, 0.08, 1)
+sky_horizon_color = Color(0.1, 0.08, 0.12, 1)
+ground_bottom_color = Color(0.05, 0.04, 0.06, 1)
+ground_horizon_color = Color(0.1, 0.08, 0.12, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 2
+ambient_light_color = Color(0.08, 0.07, 0.1, 1)
+ambient_light_energy = 0.35
+tonemap_mode = 2
+ssao_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.08, 0.06, 0.1, 1)
+fog_density = 0.008
+
+[node name="Main" type="Node3D" unique_id=79231810]
+script = ExtResource("0_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1946473999]
+environment = SubResource("env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1709727376]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 100, 0)
+light_color = Color(1, 0.95, 0.85, 1)
+light_energy = 1.5
+light_indirect_energy = 1.2
+light_volumetric_fog_energy = 1.1
+shadow_enabled = true
+
+[node name="FillBlue" type="OmniLight3D" parent="." unique_id=1706033379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 15, -80)
+light_color = Color(0.2, 0.4, 1, 1)
+light_energy = 0.6
+omni_range = 80.0
+
+[node name="FillMagenta" type="OmniLight3D" parent="." unique_id=2138674381]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 15, 80)
+light_color = Color(0.8, 0.1, 0.6, 1)
+light_energy = 0.6
+omni_range = 80.0
+
+[node name="FillOrange" type="OmniLight3D" parent="." unique_id=426665452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+light_color = Color(1, 0.5, 0.1, 1)
+light_energy = 0.4
+omni_range = 60.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="." unique_id=1809298271]
+transform = Transform3D(1, 0, 0, 0, 0.382683, 0.92388, 0, -0.92388, 0.382683, 0, 100, 0)
+light_color = Color(0.25, 0.3, 0.55, 1)
+light_energy = 0.22
+
+[node name="AtmosphereManager" type="Node" parent="." unique_id=1107870060]
+script = ExtResource("4_atmo")
+
+[node name="VoxelWorld" type="Node3D" parent="." unique_id=373605833]
+script = ExtResource("1_world")
+
+[node name="CityGenerator" type="Node" parent="VoxelWorld" unique_id=834285576]
+script = ExtResource("2_gen")
+
+[node name="Player" parent="." unique_id=988461521 instance=ExtResource("3_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 400, 0)

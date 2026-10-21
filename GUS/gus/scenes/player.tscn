@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cobonknp51oxo"]
+
+[ext_resource type="PackedScene" uid="uid://bbj10y2er6wb2" path="res://scenes/moves.tscn" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://dg2lsqhe68cgi" path="res://scripts/move.gd" id="1_g2els"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g2els"]
+radius = 0.45
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_g2els"]
+
+[node name="Player" type="CharacterBody3D" unique_id=78104154]
+script = ExtResource("1_g2els")
+
+[node name="moves" parent="." unique_id=2128239274 instance=ExtResource("1_3vyb7")]
+transform = Transform3D(-0.970295, 0, 0.241922, 0, 1, 0, -0.241922, 0, -0.970295, 0, 0.88008, 0)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1278922196]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_g2els")
+
+[node name="nek" type="Node3D" parent="." unique_id=1824788064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+
+[node name="Camera3D" type="Camera3D" parent="nek" unique_id=801754978]
+fov = 100.0
+
+[node name="grap" type="RayCast3D" parent="nek/Camera3D" unique_id=1202306168]
+unique_name_in_owner = true
+target_position = Vector3(0, -1, -20)
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1275039200]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1, 0)
+target_position = Vector3(0.5, 0, 0)
+
+[node name="RayCast3D2" type="RayCast3D" parent="." unique_id=435579109]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 1, 0)
+target_position = Vector3(-0.5, 0, 0)
+
+[node name="GrappleLine" type="MeshInstance3D" parent="." unique_id=484717380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+mesh = SubResource("ImmediateMesh_g2els")
+skeleton = NodePath("../nek/Camera3D/grap")

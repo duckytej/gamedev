@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ktqtjspjmn54"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_mr3rb"]
+left_to_right = 1.0
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7tkl8"]
+margin = 1.0
+
+[node name="RampNorth" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PrismMesh_mr3rb")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_7tkl8")

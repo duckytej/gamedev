@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PostFxProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/config/post_fx_profile.gd" id="1_post_fx"]
+
+[resource]
+script = ExtResource("1_post_fx")
+enabled = true
+sharpen_amount = 0.45
+grain_amount = 0.0

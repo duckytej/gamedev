@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://combat/weapon_resource.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+weapon_name = "Rusted Blade"
+damage = 25.0
+attack_speed = 0.5
+stamina_cost = 20.0
+range_distance = 3.0
+max_combo = 3
+hit_active_start = 0.1
+hit_active_duration = 0.2
+knockback_force = 8.0
+stagger_amount = 0.3
+is_ranged = false
+projectile_speed = 80.0
+ammo_max = 30
+reload_time = 1.5
+fire_rate = 0.15
+spread = 0.02
+recoil_force = 2.0

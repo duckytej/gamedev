@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ProjectionProfile" load_steps=2 format=3 uid="uid://e4r3kcrjhwkh"]
+
+[ext_resource type="Script" uid="uid://cq6ln3x7cfvf5" path="res://core/config/projection_profile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+enabled = true
+projection_mode = 1
+strength = 0.5
+fill = 1.0
+panini_s = 0.0
+upscale = 2.0
+supersample_amount = 0.5
+max_major_radius = 5
+max_minor_radius = 3
+ca_amount = 0.04
+ca_amount_spread = 0.5
+ca_reference_wavelength = 540.0
+ca_enable_start = 0.5
+ca_jitter = true
+ca_max_samples = 16
+ca_samples_per_ca = 0.5
+vignette_strength = 0.18
+vignette_spread = 0.5
