@@ -1,0 +1,8 @@
+AI-ASSISTED CONTENT DISCLOSURE
+
+AI-assisted planning and procedural tools were used during development.
+The final raster effects were curated, organized, exported and technically
+validated by Obssidian Art.
+
+For itch.io, disclose the project under:
+Graphics → AI-assisted

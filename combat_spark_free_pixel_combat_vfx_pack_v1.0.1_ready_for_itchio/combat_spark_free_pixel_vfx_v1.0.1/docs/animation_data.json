@@ -1,0 +1,122 @@
+{
+  "dust_burst": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 10,
+    "duration_ms": 100,
+    "loop": false,
+    "pivot": [
+      32,
+      52
+    ],
+    "sheet": "spritesheets/dust_burst.png"
+  },
+  "sword_impact": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 14,
+    "duration_ms": 71,
+    "loop": false,
+    "pivot": [
+      32,
+      32
+    ],
+    "sheet": "spritesheets/sword_impact.png"
+  },
+  "arcane_hit": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 12,
+    "duration_ms": 83,
+    "loop": false,
+    "pivot": [
+      32,
+      32
+    ],
+    "sheet": "spritesheets/arcane_hit.png"
+  },
+  "healing_bloom": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 10,
+    "duration_ms": 100,
+    "loop": false,
+    "pivot": [
+      32,
+      52
+    ],
+    "sheet": "spritesheets/healing_bloom.png"
+  },
+  "shield_break": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 12,
+    "duration_ms": 83,
+    "loop": false,
+    "pivot": [
+      32,
+      34
+    ],
+    "sheet": "spritesheets/shield_break.png"
+  },
+  "poison_puff": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 9,
+    "duration_ms": 111,
+    "loop": false,
+    "pivot": [
+      32,
+      52
+    ],
+    "sheet": "spritesheets/poison_puff.png"
+  },
+  "reward_sparkle": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 12,
+    "duration_ms": 83,
+    "loop": false,
+    "pivot": [
+      32,
+      40
+    ],
+    "sheet": "spritesheets/reward_sparkle.png"
+  },
+  "teleport_ring": {
+    "frame_size": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "fps": 10,
+    "duration_ms": 100,
+    "loop": false,
+    "pivot": [
+      32,
+      52
+    ],
+    "sheet": "spritesheets/teleport_ring.png"
+  }
+}

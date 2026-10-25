@@ -24,7 +24,7 @@ echo "== importing =="
 "$GODOT_BIN" --headless --import >/dev/null
 
 failed=0
-for suite in smoke movement threat world; do
+for suite in smoke movement traversal combat threat world vitals enemy_ai; do
 	echo "== ${suite}_test =="
 	log="$(mktemp)"
 	if "$GODOT_BIN" --headless --script "res://misc/tests/${suite}_test.gd" 2>&1 | tee "$log"; then

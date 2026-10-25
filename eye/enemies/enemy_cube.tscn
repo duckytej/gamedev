@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://enemies/enemy_cube.gd" id="1_script"]
+[ext_resource type="Resource" path="res://core/config/game_config.tres" id="2_config"]
+[ext_resource type="Script" path="res://core/combat/health_component.gd" id="3_health"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_enemy"]
+size = Vector3(1.8, 1.8, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="Material_enemy"]
+albedo_color = Color(0.54, 0.16, 0.18, 1)
+roughness = 0.55
+metallic = 0.15
+
+[sub_resource type="BoxShape3D" id="BoxShape_enemy"]
+size = Vector3(1.8, 1.8, 1.8)
+
+[node name="EnemyCube" type="CharacterBody3D" groups=["damageable", "enemy", "highlightable"]]
+collision_layer = 4
+collision_mask = 3
+floor_snap_length = 0.3
+script = ExtResource("1_script")
+config = ExtResource("2_config")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_enemy")
+material_override = SubResource("Material_enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape_enemy")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 100.0
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+pixel_size = 0.004
+billboard = 1
+double_sided = true
+no_depth_test = true
+text = "100"
+font_size = 48
+outline_size = 10

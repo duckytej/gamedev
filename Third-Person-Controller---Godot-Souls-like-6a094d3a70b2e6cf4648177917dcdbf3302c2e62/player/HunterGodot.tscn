@@ -1,0 +1,221 @@
+[gd_scene load_steps=40 format=3]
+
+[ext_resource type="Script" path="res://scripts/PlayerTemplate.gd" id="1_player"]
+[ext_resource type="PackedScene" path="res://player/HunterGodotNM.glb" id="2_mesh"]
+[ext_resource type="Script" path="res://scripts/CameraTemplate.gd" id="3_camera"]
+[ext_resource type="PackedScene" path="res://player/GodotAxNM.glb" id="4_axe"]
+
+[sub_resource type="CapsuleShape3D" id="Capsule_player"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Idle"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Walk"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Run"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Jump"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Roll"]
+animation = &"Roll"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Attack1"]
+animation = &"Attack1"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Attack2"]
+animation = &"Attack2"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_Attack3"]
+animation = &"Attack3"
+
+[sub_resource type="AnimationNodeAnimation" id="Anim_BigAttack"]
+animation = &"Bigattack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Start_Idle"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Idle_Walk"]
+advance_mode = 2
+advance_condition = &"IsWalking"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Idle_Run"]
+advance_mode = 2
+advance_condition = &"IsRunning"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Walk_Idle"]
+advance_mode = 2
+advance_condition = &"IsNotWalking"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Walk_Run"]
+advance_mode = 2
+advance_condition = &"IsRunning"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Run_Idle"]
+priority = 1
+advance_mode = 2
+advance_condition = &"IsNotWalking"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Run_Walk"]
+advance_mode = 2
+advance_condition = &"IsNotRunning"
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Idle_Jump"]
+priority = 2
+advance_mode = 2
+advance_condition = &"IsInAir"
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Walk_Jump"]
+priority = 2
+advance_mode = 2
+advance_condition = &"IsInAir"
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Run_Jump"]
+priority = 2
+advance_mode = 2
+advance_condition = &"IsInAir"
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Jump_Idle"]
+advance_mode = 2
+advance_condition = &"IsOnFloor"
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Idle_Attack1"]
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Walk_Attack1"]
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Run_Attack1"]
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Attack1_Attack2"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Attack2_Attack3"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Attack1_Idle"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Attack2_Idle"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Attack3_Idle"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Run_BigAttack"]
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Roll_BigAttack"]
+advance_mode = 0
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_BigAttack_Idle"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="T_Roll_Idle"]
+switch_mode = 0
+advance_mode = 0
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id="StateMachine_player"]
+states/Idle/node = SubResource("Anim_Idle")
+states/Idle/position = Vector2(0, 0)
+states/Walk/node = SubResource("Anim_Walk")
+states/Walk/position = Vector2(210, 0)
+states/Run/node = SubResource("Anim_Run")
+states/Run/position = Vector2(420, 0)
+states/Jump/node = SubResource("Anim_Jump")
+states/Jump/position = Vector2(630, 0)
+states/Roll/node = SubResource("Anim_Roll")
+states/Roll/position = Vector2(630, 170)
+states/Attack1/node = SubResource("Anim_Attack1")
+states/Attack1/position = Vector2(0, 170)
+states/Attack2/node = SubResource("Anim_Attack2")
+states/Attack2/position = Vector2(210, 170)
+states/Attack3/node = SubResource("Anim_Attack3")
+states/Attack3/position = Vector2(420, 170)
+states/BigAttack/node = SubResource("Anim_BigAttack")
+states/BigAttack/position = Vector2(630, 340)
+transitions = [&"Start", &"Idle", SubResource("T_Start_Idle"), &"Idle", &"Walk", SubResource("T_Idle_Walk"), &"Idle", &"Run", SubResource("T_Idle_Run"), &"Walk", &"Idle", SubResource("T_Walk_Idle"), &"Walk", &"Run", SubResource("T_Walk_Run"), &"Run", &"Idle", SubResource("T_Run_Idle"), &"Run", &"Walk", SubResource("T_Run_Walk"), &"Idle", &"Jump", SubResource("T_Idle_Jump"), &"Walk", &"Jump", SubResource("T_Walk_Jump"), &"Run", &"Jump", SubResource("T_Run_Jump"), &"Jump", &"Idle", SubResource("T_Jump_Idle"), &"Idle", &"Attack1", SubResource("T_Idle_Attack1"), &"Walk", &"Attack1", SubResource("T_Walk_Attack1"), &"Run", &"Attack1", SubResource("T_Run_Attack1"), &"Attack1", &"Attack2", SubResource("T_Attack1_Attack2"), &"Attack2", &"Attack3", SubResource("T_Attack2_Attack3"), &"Attack1", &"Idle", SubResource("T_Attack1_Idle"), &"Attack2", &"Idle", SubResource("T_Attack2_Idle"), &"Attack3", &"Idle", SubResource("T_Attack3_Idle"), &"Run", &"BigAttack", SubResource("T_Run_BigAttack"), &"Roll", &"BigAttack", SubResource("T_Roll_BigAttack"), &"BigAttack", &"Idle", SubResource("T_BigAttack_Idle"), &"Roll", &"Idle", SubResource("T_Roll_Idle")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="Playback_player"]
+
+[node name="HunterGodot" type="CharacterBody3D"]
+script = ExtResource("1_player")
+PlayerAnimationTree = NodePath("AnimationTree")
+PlayerCharacterMesh = NodePath("HunterMeshes")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("Capsule_player")
+
+[node name="HunterMeshes" parent="." instance=ExtResource("2_mesh")]
+
+[node name="Bone-Hand" type="BoneAttachment3D" parent="HunterMeshes/Armature/Skeleton3D"]
+transform = Transform3D(-0.00577453, -0.57621, 0.817282, 0.713941, -0.574641, -0.400096, 0.700182, 0.581178, 0.414701, -46.0449, 85.566, -10.939)
+bone_name = "mixamorigRightHand"
+
+[node name="AxHandle" type="Node3D" parent="HunterMeshes/Armature/Skeleton3D/Bone-Hand"]
+transform = Transform3D(1.19249e-06, 100, 0, -100, 1.19249e-06, 0, 0, 0, 100, -23.063, 6.865, 1.318)
+
+[node name="GodotAx" parent="HunterMeshes/Armature/Skeleton3D/Bone-Hand/AxHandle" instance=ExtResource("4_axe")]
+
+[node name="Camroot" type="Node3D" parent="."]
+script = ExtResource("3_camera")
+PlayerCharacterMesh = NodePath("../HunterMeshes")
+
+[node name="h" type="Node3D" parent="Camroot"]
+
+[node name="v" type="Node3D" parent="Camroot/h"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.41498, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Camroot/h/v"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -2.67056)
+current = true
+
+[node name="control_stay_delay" type="Timer" parent="Camroot"]
+wait_time = 1.0
+one_shot = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("StateMachine_player")
+anim_player = NodePath("../HunterMeshes/AnimationPlayer")
+parameters/playback = SubResource("Playback_player")
+parameters/conditions/IsInAir = false
+parameters/conditions/IsNotMoving = false
+parameters/conditions/IsNotRunning = false
+parameters/conditions/IsNotWalking = false
+parameters/conditions/IsOnFloor = false
+parameters/conditions/IsRunning = false
+parameters/conditions/IsWalking = false

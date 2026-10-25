@@ -13,6 +13,8 @@ var _failures := 0
 var _player: EyePlayer
 var _visited := {}
 var _max_y := -INF
+var _max_slide_speed := 0.0
+var _saw_slide_pose := false
 
 
 func _initialize() -> void:
@@ -51,17 +53,11 @@ func _run() -> void:
 	_check("starts idle", _player.state_machine.current_name == &"Idle")
 	_check("is on the floor", _player.is_on_floor())
 
-	# Walk forward (forward is -Z).
+	# Normal movement is always at sprint speed (there is no sprint button).
 	Input.action_press("move_forward")
 	await _frames(30)
-	_check("walking", _player.state_machine.current_name == &"Walk")
+	_check("running by default", _player.state_machine.current_name == &"Run")
 	_check("moved forward", _player.global_position.z < -0.5)
-
-	# Sprint.
-	Input.action_press("sprint")
-	await _frames(20)
-	_check("running", _player.state_machine.current_name == &"Run")
-	Input.action_release("sprint")
 
 	# Continue over the step, tracking the highest point reached.
 	_max_y = _player.global_position.y
@@ -82,6 +78,35 @@ func _run() -> void:
 	_check("jumped (visited Jump)", _visited.has(&"Jump"))
 	_check("returned to the ground", _player.is_on_floor())
 	_check("used the Land state", _visited.has(&"Land"))
+
+	# Double jump, then keep holding to slam and chain into a slide.
+	var stamina_before_slam := _player.vitals.stamina
+	Input.action_press("move_forward")
+	Input.action_press("jump")
+	await _frames(3)
+	Input.action_release("jump")
+	await _frames(12)
+	Input.action_press("jump")
+	for _i in 90:
+		await physics_frame
+		if _player.state_machine.current_name == &"Slide":
+			_max_slide_speed = maxf(_max_slide_speed, _player.get_horizontal_speed())
+			_saw_slide_pose = _saw_slide_pose or _player.slide_pose_amount > 0.5
+	Input.action_release("jump")
+	Input.action_release("move_forward")
+	_check("air-started jump hold triggers a slam", _visited.has(&"Slam"))
+	_check("slam chains into a slide", _visited.has(&"Slide"))
+	_check("slam-slide carries a strong burst",
+		_max_slide_speed >= _player.config.slam_slide_speed)
+	_check("slide compresses the body pose", _saw_slide_pose)
+	_check("slamming and sliding costs no stamina",
+		is_equal_approx(_player.vitals.stamina, stamina_before_slam))
+	_check("slam and slide finish on the floor", _player.is_on_floor())
+
+	# Let any last footstep playback finish before SceneTree quits, and give the
+	# slide pose time to stand back up.
+	await _frames(60)
+	_check("slide pose restores after the slide", _player.slide_pose_amount < 0.05)
 
 
 func _frames(count: int) -> void:

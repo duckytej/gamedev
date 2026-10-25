@@ -101,14 +101,21 @@ func validate() -> PackedStringArray:
 		issues.append("no threat highlighter (group 'threat_highlighter').")
 	if get_tree().get_first_node_in_group(&"post_fx") == null:
 		issues.append("no post-fx pass (group 'post_fx').")
+	if get_tree().get_first_node_in_group(&"enemy_director") == null:
+		issues.append("no enemy director (group 'enemy_director').")
 	var hud := get_tree().get_first_node_in_group(&"hud")
 	if hud == null:
 		issues.append("no HUD (group 'hud').")
 	elif hud.get_node_or_null("Stats") == null:
 		issues.append("HUD has no Stats readout.")
+	elif hud.get_node_or_null("Vitals") == null:
+		issues.append("HUD has no vitals readout.")
 
 	var player := get_tree().get_first_node_in_group(&"player")
-	if player != null and player.get_node_or_null("Neck/Camera3D") == null:
-		issues.append("player has no Neck/Camera3D.")
+	if player != null:
+		if player.get_node_or_null("Neck/Camera3D") == null:
+			issues.append("player has no Neck/Camera3D.")
+		if player.get_node_or_null("Health") == null:
+			issues.append("player has no Health (PlayerVitals) component.")
 
 	return issues

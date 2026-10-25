@@ -1,0 +1,351 @@
+[gd_scene format=3 uid="uid://dp47s37a3kywx"]
+
+[ext_resource type="Texture2D" uid="uid://dyf3bns42ypd8" path="res://addons/assets/kenney_prototype_textures/dark/texture_03.png" id="2_floor"]
+[ext_resource type="Texture2D" uid="uid://bw412aktd8eox" path="res://addons/assets/kenney_prototype_textures/light/texture_07.png" id="3_wall"]
+[ext_resource type="Texture2D" uid="uid://dyc7nbvdoqsbg" path="res://addons/assets/kenney_prototype_textures/dark/texture_09.png" id="4_metal"]
+[ext_resource type="Texture2D" uid="uid://c32t4a0lrihv4" path="res://addons/assets/kenney_prototype_textures/orange/texture_03.png" id="5_crate"]
+[ext_resource type="PackedScene" path="res://enemies/enemy_cube.tscn" id="6_enemy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_test"]
+sky_top_color = Color(0.254902, 0.407843, 0.65098, 1)
+sky_horizon_color = Color(0.768627, 0.803922, 0.870588, 1)
+sky_curve = 0.13
+ground_bottom_color = Color(0.0705882, 0.0784314, 0.101961, 1)
+ground_horizon_color = Color(0.396078, 0.415686, 0.454902, 1)
+
+[sub_resource type="Sky" id="Sky_test"]
+sky_material = SubResource("ProceduralSkyMaterial_test")
+
+[sub_resource type="Environment" id="Environment_test"]
+background_mode = 2
+sky = SubResource("Sky_test")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssr_max_steps = 48
+ssr_fade_in = 0.2
+ssr_fade_out = 2.5
+ssao_enabled = true
+ssao_radius = 0.8
+glow_enabled = true
+glow_levels/2 = 0.6
+glow_levels/3 = 1.0
+glow_levels/4 = 0.8
+glow_levels/5 = 0.4
+glow_levels/6 = 0.2
+glow_normalized = true
+glow_intensity = 1.0
+glow_strength = 0.9
+glow_bloom = 0.05
+glow_hdr_threshold = 0.9
+fog_enabled = true
+fog_light_color = Color(0.470588, 0.529412, 0.635294, 1)
+fog_density = 0.008
+fog_sky_affect = 0.2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.75, 0.788235, 0.858824, 1)
+adjustment_enabled = true
+adjustment_contrast = 1.08
+adjustment_saturation = 1.1
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.639216, 0.666667, 0.717647, 1)
+albedo_texture = ExtResource("2_floor")
+roughness = 0.92
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 5
+
+[sub_resource type="StandardMaterial3D" id="Material_metal"]
+albedo_color = Color(0.580392, 0.627451, 0.709804, 1)
+albedo_texture = ExtResource("4_metal")
+metallic = 0.6
+roughness = 0.4
+uv1_scale = Vector3(0.4, 0.4, 0.4)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 5
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.717647, 0.741176, 0.784314, 1)
+albedo_texture = ExtResource("3_wall")
+roughness = 0.85
+uv1_scale = Vector3(0.35, 0.35, 0.35)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 5
+
+[sub_resource type="StandardMaterial3D" id="Material_accent_cyan"]
+albedo_color = Color(0.0431373, 0.286275, 0.396078, 1)
+emission_enabled = true
+emission = Color(0.101961, 0.87451, 1, 1)
+emission_energy_multiplier = 3.5
+
+[sub_resource type="StandardMaterial3D" id="Material_accent_orange"]
+albedo_color = Color(0.396078, 0.164706, 0.0313726, 1)
+emission_enabled = true
+emission = Color(1, 0.552941, 0.164706, 1)
+emission_energy_multiplier = 3.5
+
+[sub_resource type="StandardMaterial3D" id="Material_crate"]
+albedo_texture = ExtResource("5_crate")
+roughness = 0.7
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 5
+
+[node name="TestMap" type="Node3D" unique_id=1659019285 groups=["map"]]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=535059381]
+environment = SubResource("Environment_test")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1404103399]
+transform = Transform3D(0.7876599, -0.3247624, 0.52356595, 0, 0.84979254, 0.5271173, -0.6161103, -0.41518915, 0.66934747, 0, 24, 0)
+light_color = Color(1, 0.960784, 0.898039, 1)
+light_energy = 1.1
+light_angular_distance = 0.5
+shadow_enabled = true
+directional_shadow_max_distance = 120.0
+
+[node name="Fill" type="DirectionalLight3D" parent="." unique_id=1280598004]
+transform = Transform3D(-0.64031994, -0.44579142, -0.62550807, 0, 0.8143488, -0.58037573, 0.7681083, -0.37162617, -0.5214438, 0, 18, 0)
+light_color = Color(0.560784, 0.67451, 0.878431, 1)
+light_energy = 0.35
+
+[node name="Map" type="Node3D" parent="." unique_id=1308426073]
+
+[node name="FloorNorth" type="CSGBox3D" parent="Map" unique_id=516159336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -15)
+use_collision = true
+size = Vector3(50, 1, 20)
+material = SubResource("Material_floor")
+
+[node name="FloorSouth" type="CSGBox3D" parent="Map" unique_id=1354038732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 15)
+use_collision = true
+size = Vector3(50, 1, 20)
+material = SubResource("Material_floor")
+
+[node name="FloorWest" type="CSGBox3D" parent="Map" unique_id=955321969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, -0.5, 0)
+use_collision = true
+size = Vector3(20, 1, 10)
+material = SubResource("Material_floor")
+
+[node name="FloorEast" type="CSGBox3D" parent="Map" unique_id=1171904827]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, -0.5, 0)
+use_collision = true
+size = Vector3(20, 1, 10)
+material = SubResource("Material_floor")
+
+[node name="PitFloor" type="CSGBox3D" parent="Map" unique_id=573699269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("Material_metal")
+
+[node name="PitRamp" type="CSGBox3D" parent="Map" unique_id=11845283]
+transform = Transform3D(1, 0, 0, 0, 0.948683, -0.316228, 0, 0.316228, 0.948683, 0, -1.237, -2.079)
+use_collision = true
+size = Vector3(4, 0.5, 6.32456)
+material = SubResource("Material_metal")
+
+[node name="WallNorth" type="CSGBox3D" parent="Map" unique_id=233676214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -25)
+use_collision = true
+size = Vector3(50, 8, 1)
+material = SubResource("Material_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="Map" unique_id=1737566906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 25)
+use_collision = true
+size = Vector3(50, 8, 1)
+material = SubResource("Material_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="Map" unique_id=156176321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 4, 0)
+use_collision = true
+size = Vector3(1, 8, 50)
+material = SubResource("Material_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Map" unique_id=663075659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 4, 0)
+use_collision = true
+size = Vector3(1, 8, 50)
+material = SubResource("Material_wall")
+
+[node name="PlatformLow" type="CSGBox3D" parent="Map" unique_id=1142195571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.5, -14)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("Material_metal")
+
+[node name="Stair1" type="CSGBox3D" parent="Map" unique_id=583158440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.25, -8.5)
+use_collision = true
+size = Vector3(5, 0.5, 1)
+material = SubResource("Material_metal")
+
+[node name="Stair2" type="CSGBox3D" parent="Map" unique_id=790597083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.75, -7.5)
+use_collision = true
+size = Vector3(5, 0.5, 1)
+material = SubResource("Material_metal")
+
+[node name="Stair3" type="CSGBox3D" parent="Map" unique_id=763609122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.25, -6.5)
+use_collision = true
+size = Vector3(5, 0.5, 1)
+material = SubResource("Material_metal")
+
+[node name="Stair4" type="CSGBox3D" parent="Map" unique_id=1072205494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.75, -5.5)
+use_collision = true
+size = Vector3(5, 0.5, 1)
+material = SubResource("Material_metal")
+
+[node name="Stair5" type="CSGBox3D" parent="Map" unique_id=1210554430]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.25, -4.5)
+use_collision = true
+size = Vector3(5, 0.5, 1)
+material = SubResource("Material_metal")
+
+[node name="PlatformHigh" type="CSGBox3D" parent="Map" unique_id=554319474]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 5.5, 15)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("Material_metal")
+
+[node name="Ramp" type="CSGBox3D" parent="Map" unique_id=957580308]
+transform = Transform3D(1, 0, 0, 0, 0.857493, 0.514496, 0, -0.514496, 0.857493, 15, 2.7856, 5.1286)
+use_collision = true
+size = Vector3(4, 0.5, 11.662)
+material = SubResource("Material_metal")
+
+[node name="Pillar1" type="CSGBox3D" parent="Map" unique_id=1760688967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 4, -22)
+use_collision = true
+size = Vector3(1.4, 8, 1.4)
+material = SubResource("Material_wall")
+
+[node name="Pillar2" type="CSGBox3D" parent="Map" unique_id=1282448306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 4, -22)
+use_collision = true
+size = Vector3(1.4, 8, 1.4)
+material = SubResource("Material_wall")
+
+[node name="Pillar3" type="CSGBox3D" parent="Map" unique_id=24504287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 4, 22)
+use_collision = true
+size = Vector3(1.4, 8, 1.4)
+material = SubResource("Material_wall")
+
+[node name="Pillar4" type="CSGBox3D" parent="Map" unique_id=1006988217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 4, 22)
+use_collision = true
+size = Vector3(1.4, 8, 1.4)
+material = SubResource("Material_wall")
+
+[node name="Cap1" type="CSGBox3D" parent="Map" unique_id=1783221030]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 8.3, -22)
+size = Vector3(1.6, 0.4, 1.6)
+material = SubResource("Material_accent_cyan")
+
+[node name="Cap2" type="CSGBox3D" parent="Map" unique_id=1072571737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 8.3, -22)
+size = Vector3(1.6, 0.4, 1.6)
+material = SubResource("Material_accent_cyan")
+
+[node name="Cap3" type="CSGBox3D" parent="Map" unique_id=571221942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 8.3, 22)
+size = Vector3(1.6, 0.4, 1.6)
+material = SubResource("Material_accent_orange")
+
+[node name="Cap4" type="CSGBox3D" parent="Map" unique_id=1266633015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 8.3, 22)
+size = Vector3(1.6, 0.4, 1.6)
+material = SubResource("Material_accent_orange")
+
+[node name="StripNorth" type="CSGBox3D" parent="Map" unique_id=2008948675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -24.4)
+size = Vector3(46, 0.25, 0.25)
+material = SubResource("Material_accent_cyan")
+
+[node name="StripSouth" type="CSGBox3D" parent="Map" unique_id=1245261492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 24.4)
+size = Vector3(46, 0.25, 0.25)
+material = SubResource("Material_accent_cyan")
+
+[node name="StripWest" type="CSGBox3D" parent="Map" unique_id=867672809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4, 0.25, 0)
+size = Vector3(0.25, 0.25, 46)
+material = SubResource("Material_accent_orange")
+
+[node name="StripEast" type="CSGBox3D" parent="Map" unique_id=290895745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4, 0.25, 0)
+size = Vector3(0.25, 0.25, 46)
+material = SubResource("Material_accent_orange")
+
+[node name="Crate1" type="CSGBox3D" parent="Map" unique_id=795335216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.75, 4)
+use_collision = true
+size = Vector3(1.5, 1.5, 1.5)
+material = SubResource("Material_crate")
+
+[node name="Crate2" type="CSGBox3D" parent="Map" unique_id=1814633797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.8, 0.75, 3.2)
+use_collision = true
+size = Vector3(1.5, 1.5, 1.5)
+material = SubResource("Material_crate")
+
+[node name="Crate3" type="CSGBox3D" parent="Map" unique_id=1032918089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6, 2.25, 3.6)
+use_collision = true
+size = Vector3(1.5, 1.5, 1.5)
+material = SubResource("Material_crate")
+
+[node name="PitLight" type="OmniLight3D" parent="Map" unique_id=740284907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+light_color = Color(0.313726, 0.815686, 1, 1)
+light_energy = 2.5
+shadow_enabled = true
+omni_range = 16.0
+
+[node name="PlatformLight" type="OmniLight3D" parent="Map" unique_id=954224752]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 7.5, 15)
+light_color = Color(1, 0.560784, 0.203922, 1)
+light_energy = 2.0
+omni_range = 14.0
+
+[node name="Threats" type="Node3D" parent="." unique_id=1720098310]
+
+[node name="Occluder" type="CSGBox3D" parent="Threats" unique_id=884522292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2, 10)
+use_collision = true
+size = Vector3(1, 3, 1)
+material = SubResource("Material_wall")
+
+[node name="EnemyForward" parent="Threats" unique_id=867508328 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -4)
+
+[node name="EnemyRear" parent="Threats" unique_id=432288718 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 23)
+
+[node name="EnemyRightNear" parent="Threats" unique_id=1277986510 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 0.9, 7.74)
+
+[node name="EnemyRightDeep" parent="Threats" unique_id=1613615030 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.56, 0.9, 13.36)
+
+[node name="EnemyLeftNear" parent="Threats" unique_id=212784346 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 0.9, 7.74)
+
+[node name="EnemyLeftDeep" parent="Threats" unique_id=556162456 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.56, 0.9, 13.36)
+
+[node name="EnemyOccluded" parent="Threats" unique_id=1149747076 instance=ExtResource("6_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.9, 10)

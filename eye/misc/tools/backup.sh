@@ -40,6 +40,7 @@ mkdir -p "$dest"
 items=(
   core
   player
+  combat
   world
   enemies
   addons/screenspace_projection

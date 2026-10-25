@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/weapons/weapon_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+weapon_name = "Shotgun"
+fire_type = 0
+damage = 12.0
+fire_interval = 0.9
+magazine_size = 6
+reserve_ammo = 24
+reload_time = 2.2
+spread_deg = 4.0
+bloom_per_shot = 0.5
+recoil_kick_deg = 2.2
+pellets = 8
+range = 40.0

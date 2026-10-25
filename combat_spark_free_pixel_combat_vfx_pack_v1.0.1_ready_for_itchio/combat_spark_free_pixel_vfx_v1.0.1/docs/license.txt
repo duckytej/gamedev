@@ -1,0 +1,36 @@
+OBSSIDIAN ART FREE ASSET LICENSE v1.1
+Effective date: 17 July 2026
+
+This license applies to Combat Spark (the "Assets").
+
+PERMITTED USE
+- Use the Assets in personal and commercial games, applications, videos,
+  websites and other larger creative projects.
+- Modify, resize, recolor, crop or adapt the Assets for your project.
+- Distribute the Assets only when embedded in a larger finished project.
+- Share source files privately with employees or contractors directly working
+  on your project.
+- Attribution is appreciated but not required.
+
+PROHIBITED USE
+- Resell, redistribute, sublicense, upload or give away the original or modified
+  Assets as standalone files, templates, repositories or asset packs.
+- Sell recolors, conversions or derivative packs based mainly on the Assets.
+- Use the Assets as training, validation or reference data for machine-learning
+  or generative-AI models.
+- Claim authorship of the original Assets or use them unlawfully.
+
+CLIENT WORK
+You may deliver a completed project containing the Assets to a client. The
+client may use them only as part of that project unless separately licensed.
+
+WARRANTY
+The Assets are provided "as is", without warranties. To the maximum extent
+permitted by law, Obssidian Art is not responsible for indirect or
+consequential losses arising from their use.
+
+AI-ASSISTED CONTENT
+AI-assisted planning and procedural tools were used during development.
+The final raster effects were curated, organized, exported and technically
+validated by Obssidian Art. This license grants only rights that Obssidian Art
+is legally able to grant.

@@ -1,0 +1,15 @@
+COMBAT SPARK — CHANGELOG
+
+Version 1.0.1 — 17 July 2026
+- Verified all 57 PNG files open correctly.
+- Verified 48 individual 64x64 RGBA frames.
+- Verified 8 horizontal spritesheets and one complete sheet.
+- Verified every spritesheet exactly matches its individual frames.
+- Verified no empty images, exact duplicates or clipped border pixels.
+- Added 8 animated GIF previews.
+- Improved README, license and AI-assisted-content disclosure.
+- Added SHA-256 checksums.
+- Artwork unchanged.
+
+Version 1.0.0
+- Initial release.

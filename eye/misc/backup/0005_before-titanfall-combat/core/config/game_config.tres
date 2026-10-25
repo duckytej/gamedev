@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GameConfig" format=3 uid="uid://cqjrsurhg6nrn"]
+
+[ext_resource type="Script" uid="uid://djlx0uxbf17i6" path="res://core/config/game_config.gd" id="1_game_config"]
+
+[resource]
+script = ExtResource("1_game_config")
+lens_strength = 0.2

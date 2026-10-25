@@ -77,6 +77,15 @@ func _test_config() -> void:
 	_check("post-fx sharpens", config.sharpen_amount > 0.0)
 	_check("base_fov is 140", is_equal_approx(config.base_fov, 140.0))
 	_check("walk_speed is 6.0", is_equal_approx(config.walk_speed, 6.0))
+	_check("player starts at 100 health", is_equal_approx(config.player_max_health, 100.0))
+	_check("player starts at 100 stamina", is_equal_approx(config.player_max_stamina, 100.0))
+	_check("overhealth cap is 50", is_equal_approx(config.player_max_overhealth, 50.0))
+	_check("overhealth burst needs more than half",
+		is_equal_approx(config.overhealth_burst_threshold, 0.5))
+	_check("pistol has a magazine", config.pistol_magazine_size > 0)
+	_check("sniper has a magazine", config.sniper_magazine_size > 0)
+	_check("quickswitch halves reloads",
+		is_equal_approx(config.quickswitch_reload_factor, 0.5))
 	_check("forward half angle is 70", is_equal_approx(config.forward_half_angle_deg, 70.0))
 	_check("peripheral end angle is 110",
 		is_equal_approx(config.peripheral_end_angle_deg, 110.0))
@@ -125,6 +134,22 @@ func _test_world_wiring() -> void:
 		and stats.get_node_or_null("Fps") != null)
 	_check("hud stats has a threat readout",
 		stats != null and stats.get_node_or_null("Threat") != null)
+	_check("hud stats has an AI readout",
+		stats != null and stats.get_node_or_null("AI") is Label)
+	_check("hud has a vitals readout",
+		hud != null
+		and hud.get_node_or_null("Vitals/Health") is ProgressBar
+		and hud.get_node_or_null("Vitals/Overhealth") is ProgressBar
+		and hud.get_node_or_null("Vitals/Stamina") is ProgressBar)
+
+	var director := get_first_node_in_group(&"enemy_director") as EnemyDirector
+	_check("entry scene has an enemy director", director != null)
+	if director != null:
+		_check("enemy director uses the shared config", director.config == config)
+		_check("enemy director schedules one brain per tick",
+			config == null or config.enemy_ai_max_updates_per_tick == 1)
+		_check("enemy director registered the map enemies",
+			director.get_enemy_count() >= 7)
 
 	_check("entry scene contains a map", get_first_node_in_group(&"map") != null)
 
@@ -163,6 +188,45 @@ func _test_player_wiring() -> void:
 	var machine := player.get_node_or_null("States") as PlayerStateMachine
 	_check("player has a state machine", machine != null)
 	if machine != null:
-		for state_name in ["Idle", "Walk", "Run", "Jump", "Fall", "Land", "Slide", "WallRun", "Dash"]:
+		for state_name in ["Idle", "Run", "Jump", "Fall", "Slam", "Land", "Slide", "WallRun", "Grapple", "Dash"]:
 			_check("state machine has %s" % state_name, machine.has_state(StringName(state_name)))
+		_check("state machine has no crouch/walk state", not machine.has_state(&"Walk"))
 		_check("state machine has an active state", machine.current != null)
+
+	var vitals := player.get_node_or_null("Health") as PlayerVitals
+	_check("player has vitals", vitals != null)
+	if vitals != null and player.config != null:
+		_check("player health matches config",
+			is_equal_approx(vitals.max_health, player.config.player_max_health))
+		_check("player stamina matches config",
+			is_equal_approx(vitals.max_stamina, player.config.player_max_stamina))
+		_check("player overhealth cap matches config",
+			is_equal_approx(vitals.max_overhealth, player.config.player_max_overhealth))
+
+	var abilities := player.get_node_or_null("Abilities") as PlayerAbilityHost
+	_check("player has an ability host", abilities != null)
+	if abilities != null:
+		_check("wall sense is installed", player.get_wall_sense() != null)
+		_check("grapple is installed", player.get_grapple() != null)
+		_check("weapons ability is installed", player.get_weapons() != null)
+		_check("overhealth burst is installed",
+			player.get_node_or_null("Abilities/OverhealthBurst") is OverhealthBurst)
+
+	var weapons := player.get_node_or_null("Abilities/Weapons") as WeaponController
+	_check("weapon controller is wired", weapons != null)
+	if weapons != null:
+		_check("loadout has four weapons", weapons.get_weapons().size() == 4)
+		_check("pistol is in the loadout", weapons.get_pistol() != null)
+		_check("sniper is in the loadout", weapons.get_sniper() != null)
+		_check("sword is in the loadout", weapons.get_sword() != null)
+		_check("sword starts stowed", not weapons.is_melee_equipped())
+
+	var hud := get_first_node_in_group(&"hud")
+	_check("hud has a scope overlay",
+		hud != null and hud.get_node_or_null("ScopeOverlay") is ColorRect)
+	_check("hud has a weapon status readout",
+		hud != null and hud.get_node_or_null("WeaponStatus") is Label)
+	var crosshair := hud.get_node_or_null("CrosshairCenter/Crosshair") as Control \
+		if hud != null else null
+	_check("hud never consumes mouse input",
+		crosshair != null and crosshair.mouse_filter == Control.MOUSE_FILTER_IGNORE)

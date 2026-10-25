@@ -1,0 +1,30 @@
+{
+  "name": "Combat Spark",
+  "version": "1.0.1",
+  "publisher": "Obssidian Art",
+  "category": "pixel combat visual effects",
+  "grid": [
+    64,
+    64
+  ],
+  "format": "PNG RGBA",
+  "assets": {
+    "effects": 8,
+    "frames_per_effect": 6,
+    "total_frames": 48,
+    "spritesheets": 9,
+    "animation_data": "docs/animation_data.json",
+    "gif_previews": 8
+  },
+  "license": "Obssidian Art Free Asset License v1.1",
+  "ai_disclosure": "AI-assisted planning and procedural coding; deterministic raster generation and technical curation.",
+  "qa": {
+    "png_files_valid": 57,
+    "individual_frames": 48,
+    "empty_images": 0,
+    "exact_duplicate_png_files": 0,
+    "clipped_border_pixels": 0,
+    "spritesheet_matches_verified": true,
+    "artwork_changed_in_1_0_1": false
+  }
+}

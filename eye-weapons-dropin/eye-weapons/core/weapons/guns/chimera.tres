@@ -1,0 +1,38 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/weapons/chimera_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+weapon_name = "Chimera"
+fire_type = 3
+magazine_size = 24
+reserve_ammo = 96
+reload_time = 1.8
+range = 300.0
+tap_window = 0.22
+mid_charge_time = 0.9
+full_charge_time = 1.6
+pistol_damage = 8.0
+pistol_interval = 0.18
+grenade_base_damage = 40.0
+grenade_max_damage = 80.0
+grenade_base_radius = 2.5
+grenade_max_radius = 4.5
+grenade_speed = 22.0
+grenade_gravity = 9.8
+grenade_interval = 0.8
+sniper_projectile_damage = 70.0
+sniper_projectile_speed = 120.0
+sniper_interval = 0.9
+scoped_mid_damage = 90.0
+scoped_full_damage = 110.0
+charged_interval = 1.2
+ricochet_count = 2
+ricochet_radius = 8.0
+ricochet_falloff = 0.6
+scope_zoom = 0.25
+ammo_pistol = 1
+ammo_grenade = 3
+ammo_sniper = 2
+ammo_charged = 4

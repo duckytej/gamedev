@@ -9,10 +9,13 @@ var _direction := Vector3.ZERO
 
 
 func enter(_msg: Dictionary = {}) -> void:
+	if not player.vitals.try_spend_stamina(player.config.dash_stamina_cost):
+		machine.transition_to(&"Run" if player.is_on_floor() else &"Fall")
+		return
 	_time_left = player.config.dash_time
 	_direction = player.accel_dir
 	if _direction.is_zero_approx():
-		_direction = -player.global_transform.basis.z
+		_direction = -player.camera.global_transform.basis.z
 	_direction.y = 0.0
 	_direction = _direction.normalized()
 
@@ -25,7 +28,7 @@ func physics_update(delta: float) -> void:
 
 	if _time_left <= 0.0:
 		if player.is_on_floor():
-			machine.transition_to(&"Run" if player.input.sprint_pressed else &"Walk")
+			machine.transition_to(&"Run")
 		else:
 			machine.transition_to(&"Fall")
 		return

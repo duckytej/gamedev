@@ -1,0 +1,32 @@
+GIMP Palette
+Name: Combat Spark
+Columns: 8
+#
+ 20  24  38	ink
+ 32  39  57	deep
+255 252 218	white
+104  72  52	dust0
+163 116  73	dust1
+218 172 105	dust2
+245 214 151	dust3
+134  82  31	gold0
+218 142  42	gold1
+255 209  79	gold2
+ 31  78 105	cyan0
+ 43 153 174	cyan1
+111 231 217	cyan2
+ 67  40 101	violet0
+127  70 166	violet1
+210 116 224	violet2
+ 43  82  51	green0
+ 74 150  75	green1
+150 220 104	green2
+ 54  75  38	poison0
+101 145  48	poison1
+184 211  76	poison2
+ 38  65 111	blue0
+ 61 133 190	blue1
+128 211 230	blue2
+117  45  53	red0
+210  69  69	red1
+249 132  78	red2

@@ -36,3 +36,12 @@ func physics_update(_delta: float) -> void:
 ## Raw input forwarded while active (mouse look is handled by the player).
 func handle_input(_event: InputEvent) -> void:
 	pass
+
+
+## Starts a grapple when the optional ability exists and has a target. Shared by
+## every movement state so the input rule cannot drift between them.
+func try_start_grapple() -> bool:
+	if player.input.grapple_just_pressed and player.can_grapple():
+		machine.transition_to(&"Grapple")
+		return true
+	return false
